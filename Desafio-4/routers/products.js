@@ -51,7 +51,8 @@ router.put('/productos/:id',(req,res)=>{
     let prFind = productos.find((pr) => pr.id == searchId) 
     if (prFind) {
         prFind.title=data.title
-        prFind.thumbnail=data.thumbnail
+        prFind.precio=data.precio
+        prFind.thumbnail=data.thumbnail        
         res.send(prFind)
     } else {
         res.send({ error : 'producto no encontrado' })
