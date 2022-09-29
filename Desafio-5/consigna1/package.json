@@ -1,0 +1,22 @@
+{
+  "name": "desafio-5-1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "Sandra Salvatico",
+  "license": "ISC",
+  "description": "Entregable 5 Backed-End CODER",
+  "dependencies": {
+    "express": "^4.18.1",
+    "express-handlebars": "^6.0.6" 
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.2",
+    "nodemon": "^2.0.19"
+  }
+}

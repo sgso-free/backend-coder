@@ -1,0 +1,22 @@
+<h1>Productos</h1>
+<table id="productos">
+    <tr>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Foto</th>
+    </tr>
+    {{#if isEmpty}}
+    <tr>
+        <td>No hay productos</td>
+    </tr>
+    {{/if}}
+    {{#each productos}}
+    <tr>
+        <td>{{this.title}}</td>
+        <td>{{this.precio}}</td>
+        <td><img src="{{this.thumbnail}}" alt="{{this.nombre}}" style="width:50px ;"></td>
+    </tr>
+    {{/each}} 
+</table>
+ <button onclick="location.href='/static/index.html'" type="button">
+    Agregar Producto</button>
