@@ -7,7 +7,7 @@ const productArr = [
   {
     id: 1,
     title: 'Escuadra',
-    precio:15,
+    price:15,
     thumbnail: `${process.env.BASE_HOST}/static/regla.png`
   },
 ]

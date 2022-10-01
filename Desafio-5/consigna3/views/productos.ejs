@@ -1,0 +1,23 @@
+ 
+<h1>Productos</h1>
+<table id="productos">
+    <tr>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Foto</th>
+    </tr>
+    <% if(isEmpty){ %>
+    <tr>
+        <td>No hay productos</td>
+    </tr>
+    <% } %>
+    <% productos.forEach(function(producto) { %>
+    <tr>
+        <td><%=producto.title %></td>
+        <td><%=producto.price %></td>
+        <td><img src="<%=producto.thumbnail%>" alt="<%=producto.nombre%>" style="width:50px ;"></td>
+    </tr>
+    <% }) %> 
+</table>
+    <button onclick="location.href='/static/index.html'" type="button">
+    Agregar Producto</button>

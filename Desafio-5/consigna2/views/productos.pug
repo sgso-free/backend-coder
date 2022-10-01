@@ -13,6 +13,7 @@ block content
             each prod in productos
                 tr 
                     td= prod.title
-                    td= prod.precio
+                    td= prod.price
                     td
                         img(src=prod.thumbnail , alt=prod.title, width="50px")
+    button(type="button", onclick="location.href='/static/index.html'") Agregar Producto
