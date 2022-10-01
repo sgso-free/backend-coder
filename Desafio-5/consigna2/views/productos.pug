@@ -1,0 +1,18 @@
+extends layout
+block content
+    table(style='width:100%', border='1')
+        tr
+            th Nombre
+            th Precio
+            th Foto 
+        if isEmpty
+            tr 
+               td No hay productos
+            tr
+        else 
+            each prod in productos
+                tr 
+                    td= prod.title
+                    td= prod.precio
+                    td
+                        img(src=prod.thumbnail , alt=prod.title, width="50px")
