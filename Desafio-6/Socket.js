@@ -37,7 +37,7 @@ class Socket {
 
       clienteSocket.on('nuevo-producto', (title,price,thumbnail) => { 
 
-        data = { id: siguienteID, title:title,price:price,thumbnail:''} 
+        let data = { id: siguienteID, title:title,price:price,thumbnail:thumbnail} 
         data["thumbnail"]=`${process.env.BASE_HOST}/images/`+data["thumbnail"] 
         productos.push(data)
         siguienteID++ 

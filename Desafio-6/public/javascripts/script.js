@@ -10,6 +10,7 @@
     const inputProdTitle = document.getElementById('product-title');
     const inputProdPrice = document.getElementById('product-price');
     const inputProdImg = document.getElementById('product-thumbnail');
+    const showProduct = document.getElementById('show-producto');
  
     const socket = io();
   0
@@ -34,7 +35,7 @@
             .toString()
             .padStart(2, '0');
     
-      return `${date}/${month}/${year} ${hour} ${dData.getHours()}:${dData.getMinutes()}:${dData.getSeconds()}`;
+      return `${date}/${month}/${year} ${dData.getHours()}:${dData.getMinutes()}:${dData.getSeconds()}`;
     }
 
     
@@ -42,32 +43,24 @@
       showMessage.innerText = '';
       messages.forEach((data) => {
         const item = document.createElement('li');
-       
-        try {
-          console.log(formatDate(data.fecha));    
-        } catch ( err) {
-          console.log(err);
-        }  
-       
-        item.innerHTML = `<span class="email-message">${data.email}</span> [<span class="date-message">${data.fecha}</span>] : <span class="text-message">${data.mensaje}</span>`;
+        
+        item.innerHTML = `<span class="email-message">${data.email}</span> [<span class="date-message">${formatDate(data.fecha)}</span>] : <span class="text-message">${data.mensaje}</span>`;
         showMessage.appendChild(item);
       })
     }
   
     function updateProduct(productos = []) {
-      /*showMessage.innerText = '';
-      messages.forEach((data) => {
-        const item = document.createElement('li');
-       
-        try {
-          console.log(formatDate(data.fecha));    
-        } catch ( err) {
-          console.log(err);
-        }  
-       
-        item.innerHTML = `<span class="email-message">${data.email}</span> [<span class="date-message">${data.fecha}</span>] : <span class="text-message">${data.mensaje}</span>`;
-        showMessage.appendChild(item);
-      })*/
+      showProduct.innerHTML = '<tr><th>Nombre</th><th>Precio</th><th>Foto</th></tr>';
+      productos.forEach((data) => {
+        const item = document.createElement('tr');
+         
+        item.innerHTML = `<tr>
+              <td>${data.title}</td>
+              <td>${data.price}</td>
+               <td><img src="${data.thumbnail}" alt="${data.title}" style="width:50px ;"></td>
+           </tr>`
+           showProduct.appendChild(item);
+      })
     }
 
     formMessage.addEventListener('submit', (event) => {
@@ -90,9 +83,13 @@
       console.log('Conectados al servidor');
     });
   
-    socket.on('inicio', (data) => {
-      mensajes = data;
+    socket.on('inicio', (mensInicio,prodInicio) => {
+      mensajes = mensInicio;
       updateMessages(mensajes);
+
+      productos=prodInicio;
+      updateProduct(productos);
+
     });
   
     socket.on('notificacion-mensaje', (data) => {
