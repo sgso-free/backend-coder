@@ -1,0 +1,22 @@
+{
+    "name": "desafio-6",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "start": "node ./bin/www",
+        "dev": "npx nodemon --exec 'node -r dotenv/config' ./bin/www"
+    },
+    "keywords": [],
+    "author": "Sandra Salvatico",
+    "license": "ISC",
+    "description": "Entregable 6 Backed-End CODER",
+    "dependencies": {
+        "express": "^4.18.1",
+        "hbs": "~4.0.4",
+        "socket.io": "^4.5.2"
+    },
+    "devDependencies": {
+        "dotenv": "^16.0.2",
+        "nodemon": "^2.0.19"
+    }
+}
