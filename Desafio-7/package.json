@@ -1,0 +1,22 @@
+{
+    "name": "desafio-7",
+    "version": "1.0.0",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "nodemon src/app.js"
+    },
+    "keywords": [],
+    "author": "Sandra Salvatico",
+    "license": "ISC",
+    "description": "Projecto Primer Entrega - Backed-End CODER (Desafio7)",
+    "dependencies": {
+        "express": "^4.18.1",
+        "express-handlebars": "^6.0.6"
+    },
+    "devDependencies": {
+        "dotenv": "^16.0.2",
+        "nodemon": "^2.0.19"
+    }
+}
