@@ -118,17 +118,19 @@ class ContenedorCarrito {
     async deleteByProd (searchId,searchIdProd) {
         try {
 
-            /*//read all object
-            let ctFind = await this.getById();
+            //read all object, and finde the id
+            let carritoRead = await this.getAll(); 
+            let ctFind = carritoRead.find((ct) => ct.id == searchId) 
             
             //filter, remove the product with id
             let remainingArr = ctFind.productos.filter((prod) => prod.id != searchIdProd); 
 
             ctFind.productos = remainingArr;
             
-            JSON.stringify(remainingArr)  
+            //convert data to json
+            let jData =  JSON.stringify(carritoRead)  
 
-            await fs.promises.writeFile(this.pathName,jData,'utf-8') */
+            await fs.promises.writeFile(this.pathName,jData,'utf-8') 
 
         } catch(error) {
             console.log('An error when get remove product by id (in deleteByProd): ',error.message)
@@ -137,6 +139,35 @@ class ContenedorCarrito {
 
 
     }
+
+    async addProduct (searchId,productData) {
+        try {
+
+            //read all object, and finde the id
+            let carritoRead = await this.getAll(); 
+            let ctFind = carritoRead.find((ct) => ct.id == searchId) 
+            
+            //filter, remove the product with id
+            let remainingArr = ctFind.productos.filter((prod) => prod.id != productData.id); 
+
+            ctFind.productos = remainingArr;
+
+            //add data to array
+            ctFind.productos.push(productData)
+            
+            //convert data to json
+            let jData =  JSON.stringify(carritoRead)  
+
+            await fs.promises.writeFile(this.pathName,jData,'utf-8') 
+
+        } catch(error) {
+            console.log('An error when get remove product by id (in addProd): ',error.message)
+            //throw new Error(error.message)
+        }
+
+
+    }
+
 
 };
  
