@@ -3,7 +3,7 @@ const {Router} = express
 
 const routerProducto = Router(Router)
 
-const userAdmin = false;
+const userAdmin = true;
 const Contenedor = require('../persistencia/ContenedorProducto.js')
 const productos = new Contenedor("./persistencia/products.json")
 

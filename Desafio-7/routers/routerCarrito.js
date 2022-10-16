@@ -63,10 +63,10 @@ routerCarrito.delete('/:id/productos/:id_prod',async (req,res)=>{
 routerCarrito.post('/:id/productos', async (req,res)=>{ 
     
     const searchId = parseInt(req.params.id, 10);
-    let { body : data } = req
-    console.log({ error : 'Uno' })
-    prodArrayId = data.productos;
-    console.log({ error : 'dos' })
+    let { body : data } = req  
+    res.status(200).json(await carritos.addProduct(searchId,data)); 
+
+    /*prodArrayId = data.productos; 
     for (const idProd of prodArrayId) {
         let prFind = await productos.getById(idProd)
         if (prFind) {
@@ -75,7 +75,8 @@ routerCarrito.post('/:id/productos', async (req,res)=>{
         } else {
             console.log({ error : 'producto no encontrado' })
         }
-    }; 
+    }; */
+
     res.status(200).end()
    
      
