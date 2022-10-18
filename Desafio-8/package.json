@@ -2,7 +2,7 @@
   "name": "desafio-8",
   "version": "1.0.0",
   "description": "Desafio de Base de Datos",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node ./bin/www",
     "dev": "npx nodemon --exec 'node -r dotenv/config' ./bin/www"

@@ -2,6 +2,10 @@ const { Server } = require('socket.io')
 
 let io
 
+//DB
+const {createTableMensajes} =  require('./persistencia/create_table_mensajes.js')
+const {createTableProductos} =  require('./persistencia/create_table_productos.js')
+    
 const mensajes = [{
   socketID: '1234',
   email: 'coder@coder.com',
@@ -22,9 +26,17 @@ let siguienteID = 2
 
 class Socket {
 
-  static init(httpServer) {
+  static async init(httpServer) {
     console.log('Configurando el socket')
     io = new Server(httpServer)
+
+    try {
+      await createTableProductos() 
+      await createTableMensajes() 
+    } catch (error) {
+      console.error(error.message)
+    }
+
     io.on('connection', (clienteSocket) => {
       console.log('Nuevo cliente conectado', clienteSocket.id)
 

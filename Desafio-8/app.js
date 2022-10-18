@@ -1,3 +1,5 @@
+//Express
+
 const express = require('express')
 const path = require('path')
 const { parsed, error } = require("dotenv").config();
@@ -28,22 +30,6 @@ app.use(function (err, req, res, next) {
 })
 
 
+
 module.exports = app;
-
-var knex_Mysql = require('knex')({
-    client: 'mysql',
-    connection: {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '',
-      database: 'myapp_test'
-    },
-    pool: { min: 0, max: 7 }
-  })
-
-  var knex_Sqlite3 = require('knex')({
-    client: 'sqlite3',
-    connection: {
-      filename: './mydb.sqlite'  
-    } 
-  })
+ 
