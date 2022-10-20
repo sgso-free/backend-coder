@@ -3,57 +3,47 @@ const { Server } = require('socket.io')
 let io
 
 //DB
-const {createTableMensajes} =  require('./persistencia/create_table_mensajes.js')
-const {createTableProductos} =  require('./persistencia/create_table_productos.js')
-    
-const mensajes = [{
-  socketID: '1234',
-  email: 'coder@coder.com',
-  mensaje: 'Coder House',
-  fecha: new Date()
-}]
-
-const productos = [
-  {
-    id: 1,
-    title: 'Escuadra',
-    price:15,
-    thumbnail: `${process.env.BASE_HOST}/images/regla.png`
-  },
-]
-
-let siguienteID = 2
-
+const Mensajes =  require('./persistencia/Mensajes.js')
+const Productos =  require('./persistencia/Productos.js')
+   
 class Socket {
 
   static async init(httpServer) {
     console.log('Configurando el socket')
-    io = new Server(httpServer)
+    let io = new Server(httpServer)
 
+    let mensajes = new Mensajes();
+    let productos = new Productos();
     try {
-      await createTableProductos() 
-      await createTableMensajes() 
+      await productos.createTableProductos()  
+      await mensajes.createTableMensajes()  
     } catch (error) {
       console.error(error.message)
     }
 
-    io.on('connection', (clienteSocket) => {
+    io.on('connection', async (clienteSocket) => {
       console.log('Nuevo cliente conectado', clienteSocket.id)
-
-      clienteSocket.emit('inicio', mensajes, productos)
+ 
+      let allMensj = await mensajes.getMensajes()
+      
+      let allProd = await productos.getProductos()
+      console.log('PRoductos', allProd)
+      clienteSocket.emit('inicio',allMensj , allProd)
 
       clienteSocket.on('nuevo-mensaje', (data,name) => { 
-        mensajes.push({ socketID: clienteSocket.id, mensaje: data, fecha: new Date(), email:name })
+        //mensajes.push({ socketID: clienteSocket.id, mensaje: data, fecha: new Date(), email:name })
+        mensajes.insertMensaje([{ socketID: clienteSocket.id, mensaje: data, fecha: new Date(), email:name }])
         io.emit('notificacion-mensaje',{ socketID: clienteSocket.id, mensaje: data, fecha: new Date(), email:name})
       })
 
       clienteSocket.on('nuevo-producto', (title,price,thumbnail) => { 
-
-        let data = { id: siguienteID, title:title,price:price,thumbnail:thumbnail} 
+       
+        let data = {"nombre":title,"precio":price,"thumbnail":thumbnail} 
+        console.log('DATAAAA',data)
         data["thumbnail"]=`${process.env.BASE_HOST}/images/`+data["thumbnail"] 
-        productos.push(data)
-        siguienteID++ 
-        io.emit('notificacion-producto',{ ...data})
+        console.log('DATAAAA',data)
+        productos.insertProducto([data]) 
+        io.emit('notificacion-producto',data)
       })
 
       clienteSocket.on('disconnect', () => {

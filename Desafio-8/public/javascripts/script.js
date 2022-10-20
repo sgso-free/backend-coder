@@ -55,9 +55,9 @@
         const item = document.createElement('tr');
          
         item.innerHTML = `<tr>
-              <td>${data.title}</td>
-              <td>${data.price}</td>
-               <td><img src="${data.thumbnail}" alt="${data.title}" style="width:50px ;"></td>
+              <td>${data.nombre}</td>
+              <td>${data.precio}</td>
+               <td><img src="${data.thumbnail}" alt="${data.nombre}" style="width:50px ;"></td>
            </tr>`
            showProduct.appendChild(item);
       })
