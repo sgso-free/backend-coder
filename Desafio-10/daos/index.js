@@ -17,6 +17,22 @@ let carritosDao
             productosDao = new ProductosDaoMongoDB()
             carritosDao = new CarritosDaoMongoDB()
             break
+
+          case 'firebase':
+            const config = require('../config.js') 
+            const firebaseAdmin = require("firebase-admin");
+             
+            firebaseAdmin.initializeApp({ 
+              credential: firebaseAdmin.credential.cert(config.firebase.firebaseConfig)
+            });
+
+            const ProductosDaoFirebase = require('./productos/ProductosDaoFirebase.js')
+            const CarritosDaoFirebase   = require('./carritos/CarritosDaoFirebase.js')
+
+            productosDao = new ProductosDaoFirebase(firebaseAdmin)
+            carritosDao = new CarritosDaoFirebase(firebaseAdmin)
+            break
+
         default:
             const ProductosDaoMem   = require('./productos/ProductosDaoMemoria.js')
             const  CarritosDaoMem   = require('./carritos/CarritosDaoMemoria.js')

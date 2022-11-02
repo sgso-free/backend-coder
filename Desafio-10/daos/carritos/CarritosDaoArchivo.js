@@ -7,6 +7,7 @@ class CarritosDaoArchivo extends ContenedorArchivo {
     }
 
     async save(carrito = { productos: [] }) {
+        carrito.timestamp = Date.now();
         return super.save(carrito)
     }
 }

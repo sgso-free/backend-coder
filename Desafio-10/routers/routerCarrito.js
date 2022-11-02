@@ -18,7 +18,7 @@ routerCarrito.post('/', async (req,res)=>{
  
 //devuelve los productos del carrito 
 routerCarrito.get('/:id/productos', async (req,res)=>{
-    const searchId = parseInt(req.params.id, 10);
+    const searchId = req.params.id;
     let prFind = await carritos.getById(searchId)
     if (prFind) {
         console.log('Here from router (Get)',prFind)
@@ -36,7 +36,7 @@ routerCarrito.get('/:id/productos', async (req,res)=>{
 //elimina un carrito
 routerCarrito.delete('/:id',async (req,res)=>{
     
-    const searchId = parseInt(req.params.id, 10);
+    const searchId = req.params.id;
     console.log("Delete id:",searchId);
     await carritos.deleteById(searchId) ;
         
@@ -47,8 +47,8 @@ routerCarrito.delete('/:id',async (req,res)=>{
 //elimina un carrito
 routerCarrito.delete('/:id/productos/:id_prod',async (req,res)=>{
     
-    const searchId = parseInt(req.params.id, 10);
-    const searchIdProd = parseInt(req.params.id_prod, 10);
+    const searchId = req.params.id;
+    const searchIdProd = req.params.id_prod;
     console.log("Delete id:",searchId);
     await carritos.deleteByProd(searchId,searchIdProd) ;
         
@@ -61,7 +61,7 @@ routerCarrito.delete('/:id/productos/:id_prod',async (req,res)=>{
 //y devuelve su id asignado.
 routerCarrito.post('/:id/productos', async (req,res)=>{ 
     
-    const searchId = parseInt(req.params.id, 10);
+    const searchId = req.params.id;
     let { body : data } = req  
     res.status(200).json(await carritos.addProduct(searchId,data)); 
 

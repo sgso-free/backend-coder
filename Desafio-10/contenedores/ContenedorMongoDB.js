@@ -61,18 +61,15 @@ class ContenedorMongoDB {
       }).catch(function(error){
         throw new Error(`An error when get remove by id (in deleteById): ${error.message}`)
       });
-      
-
+       
   }
 
   async deleteAll () {
-      try { 
-          this.elements = [] 
-          return this.elements
-      } catch(error) {
+    this.collection.deleteAll().then(function(){
+      return []
+    }).catch(function(error){
           throw new Error(`An error when get remove all (in deleteAll): ${error.message}`)
-      }
+    });
   }
 }
-
 module.exports = ContenedorMongoDB
