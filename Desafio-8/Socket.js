@@ -32,6 +32,7 @@ class Socket {
 
       clienteSocket.on('nuevo-mensaje', (data,name) => { 
         //mensajes.push({ socketID: clienteSocket.id, mensaje: data, fecha: new Date(), email:name })
+        console.log(clienteSocket.id)
         mensajes.insertMensaje([{ socketID: clienteSocket.id, mensaje: data, fecha: new Date(), email:name }])
         io.emit('notificacion-mensaje',{ socketID: clienteSocket.id, mensaje: data, fecha: new Date(), email:name})
       })
