@@ -10,7 +10,6 @@ class CarritosDaoMongoDB extends ContenedorMongoDB {
     //create the schema of the object, and send the colletion use for this.
     super('Carrito', new Schema({
       "productos": { type: [], require: true },
-      "id": { type: Number, require: true },
       "timestamp": { type: Date, default: Date.now }
     }))
   }
@@ -18,6 +17,16 @@ class CarritosDaoMongoDB extends ContenedorMongoDB {
   async save(carrito = { productos: [] }) {
     return super.save(carrito)
   }
+ 
+  async deleteByProd (searchId,searchIdProd) {
+    super.deleteOneFromArray(searchId,"productos",searchIdProd)
+  }
+
+  async addProduct (searchId,dataProd) {
+    super.addOneInArray(searchId,"productos",dataProd)
+  }
+
+
 }
 
 module.exports =  CarritosDaoMongoDB

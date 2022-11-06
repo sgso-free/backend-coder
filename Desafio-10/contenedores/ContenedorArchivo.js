@@ -52,8 +52,8 @@ class ContenedorArchivo {
 
             //read all object, and finde the id
             let dataRead = await this.getAll(); 
-            let ctFind = dataRead.find((el) => el.id == searchId) 
-            return ctFind
+            let elFind = dataRead.find((el) => el.id == searchId) 
+            return elFind
 
         } catch(error) {
             throw new Error(`An error when get object by id (in getbyId): ${error.message}`)
@@ -115,8 +115,57 @@ class ContenedorArchivo {
         } catch(error) {
             throw new Error(`An error when get remove all (in deleteById): ${error.message}`)
          }
+    }
+
+    async deleteOneFromArray (searchId,arrayName,searchIdArray) {
+        try {
+
+            //read all object
+            let dataRead = await this.getAll();
+            let elFind = dataRead.find((el) => el.id == searchId) 
+            
+            //filter, remove the element with id
+            let remainingArr = elFind[arrayName].filter((subEl) => subEl.id != searchIdArray); 
+
+            elFind[arrayName] = remainingArr;
+            
+            //convert data to json
+            let jData =  JSON.stringify(dataRead)  
+
+            await fs.promises.writeFile(this.pathName,jData,'utf-8') 
+
+        } catch(error) {
+            throw new Error(`An error when get remove element from array (in deleteOneFromArray): ${error.message}`) 
+        }
 
 
+    }
+
+    async addOneInArray (searchId,arrayName,dataOne) {
+        try {
+
+            //read all object, and finde the id
+            let dataRead = await this.getAll(); 
+            let elFind = dataRead.find((el) => el.id == searchId) 
+            
+            console.log(elFind)
+            console.log(elFind[arrayName])
+            //filter, remove the element with id
+            let remainingArr = elFind[arrayName].filter((el) => el.id != dataOne.id); 
+
+            elFind[arrayName] = remainingArr;
+
+            //add data to array
+            elFind[arrayName].push(dataOne)
+            
+            //convert data to json
+            let jData =  JSON.stringify(dataRead)  
+
+            await fs.promises.writeFile(this.pathName,jData,'utf-8') 
+
+        } catch(error) {
+            throw new Error(`An error when add element in array (in addOneInArray): ${error.message}`)  
+        } 
     }
 
 };

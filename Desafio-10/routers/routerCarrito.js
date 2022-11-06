@@ -22,6 +22,8 @@ routerCarrito.get('/:id/productos', async (req,res)=>{
     let prFind = await carritos.getById(searchId)
     if (prFind) {
         console.log('Here from router (Get)',prFind)
+        console.log('Here from router (Productos)',prFind.productos)
+        console.log('Here from router (Productos)',prFind._id)
         res.status(200).json(prFind.productos)
     } else {
         console.log({ error : 'carrito no encontrado' })

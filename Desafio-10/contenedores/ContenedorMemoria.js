@@ -46,7 +46,7 @@ class ContenedorMemoria {
         try {
  
             //filter,  
-            let index = this.elements.findIndex((el) => el.id != searchId);  
+            let index = this.elements.findIndex((el) => el.id == searchId);  
             if (index == -1) {
                 throw new Error(`An error when update object: Object not find`)
             } else {
@@ -65,7 +65,7 @@ class ContenedorMemoria {
         try {
  
             //filter,  
-            let index = this.elements.findIndex((el) => el.id != searchId);  
+            let index = this.elements.findIndex((el) => el.id == searchId);  
             if (index == -1) {
                 throw new Error(`An error when remove object: Object not find`)
             } else {
@@ -85,6 +85,51 @@ class ContenedorMemoria {
         } catch(error) {
             throw new Error(`An error when get remove all (in deleteAll): ${error.message}`)
         }
+    }
+
+    async deleteOneFromArray (searchId,arrayName,searchIdArray) {
+        try {
+
+            //read all object
+            let index = this.elements.findIndex((el) => el.id == searchId); 
+            
+            if (index == -1) {
+                throw new Error(`An error when update object: Object not find`)
+            } else {
+                let elem = this.elements[index] 
+                let indexArray = elem[arrayName].findIndex((el) => el.id == searchIdArray); 
+                if (indexArray != -1) {
+                    elem[arrayName].splice(indexArray,1) 
+                }
+            } 
+
+        } catch(error) {
+            throw new Error(`An error when get remove element from array (in deleteOneFromArray): ${error.message}`) 
+        }
+
+
+    }
+
+    async addOneInArray (searchId,arrayName,dataOne) {
+        try {
+
+            //read all object
+            let index = this.elements.findIndex((el) => el.id == searchId);  
+            if (index == -1) {
+                throw new Error(`An error when update object: Object not find`)
+            } else {
+                let elem = this.elements[index] 
+                let indexEl = elem[arrayName].findIndex((el) => el.id == dataOne.id); 
+                if (indexEl == -1) { 
+                    elem[arrayName].push(dataOne)
+                } else { 
+                    elem[arrayName][indexEl]=dataOne
+                } 
+            }  
+
+        } catch(error) {
+            throw new Error(`An error when add element in array (in addOneInArray): ${error.message}`)  
+        } 
     }
 
 
