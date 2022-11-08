@@ -77,7 +77,7 @@ class ContenedorMongoDB {
     
       this.collection.updateOne({_id : searchId}, {
           $pull: {
-            arrayName: {_id: searchIdArray},
+            [arrayName]: {_id: searchIdArray},
           },
       }).then(function(){
             return 
@@ -88,17 +88,25 @@ class ContenedorMongoDB {
   }
 
   async addOneInArray (searchId,arrayName,dataOne) {
-    console.log(searchId,arrayName,dataOne)
-    this.collection.findOneAndUpdate({_id : searchId}, {
-        $push: {
-          arrayName: dataOne,
-        }},
-        { arrayFilters: [{ arrayName: dataOne._id  }] }
-    ).catch(function(error){
-      throw new Error(`An error when get add one in array (in addOneInArray): ${error.message}`)
-    });
+    try {
+        //if exist update, without duplicate 
+        let selArray = arrayName+".$"
+        let idArray = arrayName+"._id"
+        let result = await this.collection.updateOne({_id : searchId, [idArray]: {$ne: dataOne._id}},
+          {$push: { [arrayName]: dataOne}} );
+        if (result.modifiedCount==0) {
+          let result2 = await this.collection.updateOne({_id : searchId, [arrayName]:{ "$elemMatch": {_id:dataOne._id}}}, {
+            $set: {
+              [selArray]: dataOne,
+            }})
+            console.log(result2)
+        }
+    } catch(error) {
+      throw new Error(`An error when add one in array (in addOneInArray): ${error.message}`)
+    }
   }
 
-} 
+
+}
 
 module.exports = ContenedorMongoDB
