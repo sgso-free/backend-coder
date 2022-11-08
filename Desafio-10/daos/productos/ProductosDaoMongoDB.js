@@ -1,18 +1,11 @@
 const ContenedorMongoDB  = require('../../contenedores/ContenedorMongoDB.js');
 const mongoose = require("mongoose");
+const productoSchema = require('../../models/productoSchema.js');
 
 class ProductosDaoMongoDB extends ContenedorMongoDB {
 
     constructor() {
-        super('Producto', new mongoose.Schema({
-            "nombre": { type: String, require: true },
-            "descripcion": { type: String, require: true },
-            "codigo": { type: String, require: true },
-            "foto": { type: String, require: true },
-            "precio": { type: Number, require: true },
-            "stock": { type: Number, require: true },
-            "timestamp": { type: Date, default: Date.now },
-          }))
+        super('Producto', productoSchema)
 
           super.connectDb();
 
