@@ -27,7 +27,7 @@ class Socket {
       let allMensj = await mensajes.getMensajes()
       
       let allProd = await productos.getProductos()
-      console.log('PRoductos', allProd)
+      console.log('Productos', allProd)
       clienteSocket.emit('inicio',allMensj , allProd)
 
       clienteSocket.on('nuevo-mensaje', (data,name) => { 

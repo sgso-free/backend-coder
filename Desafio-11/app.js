@@ -6,8 +6,8 @@ const { parsed, error } = require("dotenv").config();
 
 //const {engine} = require('hbs')
 
-var indexRouter = require('./routers/index');
-//const productos = require('./routers/productos')
+const indexRouter = require('./routers/index');
+const productosRouter = require('./routers/productos')
 
 const app = express()
 
@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.set('view engine', 'hbs')
 app.set('views', './views')
 
-//app.use('/api', productos)
+app.use('/api', productosRouter)
 app.use('/', indexRouter);
 
 app.use(function (err, req, res, next) {
