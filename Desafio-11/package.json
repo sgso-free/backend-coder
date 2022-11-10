@@ -1,0 +1,25 @@
+{
+  "name": "desafio-8",
+  "version": "1.0.0",
+  "description": "Desafio de Base de Datos",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "npx nodemon --exec 'node -r dotenv/config' ./bin/www"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "hbs": "~4.0.4",
+    "knex": "^2.3.0",
+    "mysql": "^2.18.1",
+    "socket.io": "^4.5.2",
+    "sqlite3": "^5.1.2"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.2",
+    "nodemon": "^2.0.19"
+  }
+}
