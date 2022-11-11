@@ -1,52 +1,45 @@
 const { Server } = require('socket.io')
+const { schema, normalize, denormalize } = require('normalizr') 
+
+const api = require('./daos/index.js');  
+const mensajes= api.mensajesDao;
+
+const authorSchema = new schema.Entity('author',{},{idAttribute: 'email'})
+
+const mensajeSchema = new schema.Entity('mensaje', {
+    author: authorSchema 
+}) 
+const mensajesSchema = new schema.Entity('mensajes', { 
+  mensajes: [mensajeSchema]
+})
 
 let io
-
-//DB
-const Mensajes =  require('./persistencia/Mensajes.js')
-const Productos =  require('./persistencia/Productos.js')
-   
+  
 class Socket {
 
   static async init(httpServer) {
     console.log('Configurando el socket')
     let io = new Server(httpServer)
-
-    let mensajes = new Mensajes();
-    let productos = new Productos();
-    try {
-      await productos.createTableProductos()  
-      await mensajes.createTableMensajes()  
-    } catch (error) {
-      console.error(error.message)
-    }
+  
 
     io.on('connection', async (clienteSocket) => {
       console.log('Nuevo cliente conectado', clienteSocket.id)
  
-      let allMensj = await mensajes.getMensajes()
-      
-      let allProd = await productos.getProductos()
-      console.log('Productos', allProd)
-      clienteSocket.emit('inicio',allMensj , allProd)
+      let allMensj = await mensajes.getAll()
+      let normMensj = {id : "999", "mensajes":allMensj}
+      const dataNormalized = normalize(normMensj, mensajesSchema)
+       
+      clienteSocket.emit('inicio',dataNormalized)
 
-      clienteSocket.on('nuevo-mensaje', (data,name) => { 
+      clienteSocket.on('nuevo-mensaje', (data) => { 
         //mensajes.push({ socketID: clienteSocket.id, mensaje: data, fecha: new Date(), email:name })
         console.log(clienteSocket.id)
-        mensajes.insertMensaje([{ socketID: clienteSocket.id, mensaje: data, fecha: new Date(), email:name }])
-        io.emit('notificacion-mensaje',{ socketID: clienteSocket.id, mensaje: data, fecha: new Date(), email:name})
+        data.fecha = new Date()
+        data.socketID = clienteSocket.id
+        mensajes.save(data)
+        io.emit('notificacion-mensaje',data)
       })
-
-      clienteSocket.on('nuevo-producto', (title,price,thumbnail) => { 
-       
-        let data = {"nombre":title,"precio":price,"thumbnail":thumbnail} 
-        console.log('DATAAAA',data)
-        data["thumbnail"]=`${process.env.BASE_HOST}/images/`+data["thumbnail"] 
-        console.log('DATAAAA',data)
-        productos.insertProducto([data]) 
-        io.emit('notificacion-producto',data)
-      })
-
+ 
       clienteSocket.on('disconnect', () => {
         console.log('Cliente desconectado')
       })

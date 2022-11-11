@@ -1,0 +1,48 @@
+{
+	"id": "999",
+	"mensajes": [{
+			"id": "123",
+			"author": {
+				"email": "pedro@gmail.com",
+				"nombre": "Pablo",
+				"apellido": "Perez",
+				"alias": "20442654",
+				"avatar": "CABA 123"
+			},
+			"text": "pedro send message"
+		},
+		{
+			"id": "1123",
+			"author": {
+				"email": "juan@gmail.com",
+				"nombre": "Nicole",
+				"apellido": "Gonzalez",
+				"alias": "CABA 456",
+				"avatar": "1567811543"
+			},
+			"text": "juan send message"
+		},
+		{
+			"id": "2123",
+			"author": {
+				"email": "mei@gmail.com",
+				"nombre": "Pedro",
+				"apellido": "Mei",
+				"alias": "CABA 789",
+				"avatar": "1567291542"
+			},
+			"text": "mein send message"
+		},
+		{
+			"id": "1123",
+			"author": {
+				"email": "juan@gmail.com",
+				"nombre": "Nicole",
+				"apellido": "Gonzalez",
+				"alias": "CABA 456",
+				"avatar": "1567811543"
+			},
+			"text": "juan send message as nicole"
+		}
+	]
+}

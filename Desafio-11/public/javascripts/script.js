@@ -3,21 +3,27 @@
     const formMessage = document.getElementById('form-message');
     const inputMessage = document.getElementById('input-message');
     const showMessage = document.getElementById('show-message');
-    const inputEmail = document.getElementById('input-email');
     
-    let productos = [];
-    const formProduct = document.getElementById('form-product');
-    const inputProdTitle = document.getElementById('product-title');
-    const inputProdPrice = document.getElementById('product-price');
-    const inputProdImg = document.getElementById('product-thumbnail');
-    const showProduct = document.getElementById('show-producto');
- 
+    const inputEmail = document.getElementById('input-email');
+    const inputNombre = document.getElementById('input-nombre');
+    const inputApellido = document.getElementById('input-apellido');
+    const inputEdad = document.getElementById('input-edad');
+    const inputAlias = document.getElementById('input-alias');
+    const inputAvatar = document.getElementById('input-avatar');
+      
+    const compressH1 = document.getElementById('compress');
+
+    const authorSchema = new normalizr.schema.Entity('author',{},{idAttribute: 'email'})
+
+    const mensajeSchema = new normalizr.schema.Entity('mensaje', {
+        author: authorSchema 
+    }) 
+    const mensajesSchema = new normalizr.schema.Entity('mensajes', { 
+      mensajes: [mensajeSchema]
+    })
+
     const socket = io();
-  0
-    /* inputMessage.addEventListener('keyup', (event) => {
-      socket.emit('nuevo-mensaje', event.target.value);
-    }) */
-  
+   
     function formatDate(data) {
 
       let dData = new Date(data);
@@ -39,67 +45,61 @@
     }
 
     
-    function updateMessages(messages = []) {
+    function updateMessages(messages) {
       showMessage.innerText = '';
+ 
       messages.forEach((data) => {
         const item = document.createElement('li');
         
-        item.innerHTML = `<span class="email-message">${data.email}</span> [<span class="date-message">${formatDate(data.fecha)}</span>] : <span class="text-message">${data.mensaje}</span>`;
+        item.innerHTML = `<span class="email-message">${data.author.email}</span> [<span class="date-message">${formatDate(data.fecha)}</span>] : <span class="text-message">${data.text}</span>`;
         showMessage.appendChild(item);
       })
     }
-  
-    function updateProduct(productos = []) {
-      showProduct.innerHTML = '<tr><th>Nombre</th><th>Precio</th><th>Foto</th></tr>';
-      productos.forEach((data) => {
-        const item = document.createElement('tr');
-         
-        item.innerHTML = `<tr>
-              <td>${data.nombre}</td>
-              <td>${data.precio}</td>
-               <td><img src="${data.thumbnail}" alt="${data.nombre}" style="width:50px ;"></td>
-           </tr>`
-           showProduct.appendChild(item);
-      })
+   
+    function updateTitle(compressValue) {
+      compressH1.innerHTML = compressValue; 
     }
 
     formMessage.addEventListener('submit', (event) => {
       event.preventDefault();
-      socket.emit('nuevo-mensaje', inputMessage.value, inputEmail.value);
+ 
+      let data = {
+              "text":inputMessage.value, 
+              "author":{
+                  "email":inputEmail.value,
+                  "nombre":inputNombre.value,
+                  "apellido":inputApellido.value,
+                  "edad":inputEdad.value,
+                  "alias":inputAlias.value,
+                  "avatar":inputAvatar.value
+          }};
+
+      socket.emit('nuevo-mensaje', data);
       inputMessage.value = '';
       inputMessage.focus();
     })
-  
-    formProduct.addEventListener('submit', (event) => {
-      event.preventDefault();
-      socket.emit('nuevo-producto', inputProdTitle.value, inputProdPrice.value,inputProdImg.value);
-      inputProdTitle.value = '';
-      inputProdPrice.value = '';
-      inputProdImg.value='';
-      inputProdTitle.focus();
-    })
-
+   
     socket.on('connect', () => {
       console.log('Conectados al servidor');
     });
   
-    socket.on('inicio', (mensInicio,prodInicio) => {
-      mensajes = mensInicio;
+    socket.on('inicio', (normMensj) => { 
+
+      const denormMensj = normalizr.denormalize(normMensj, mensajesSchema)
+      messages = denormMensj.mensajes 
       updateMessages(mensajes);
 
-      productos=prodInicio;
-      updateProduct(productos);
-
+      const originalSize = JSON.stringify(denormMensj).length
+      const normalizedSize = JSON.stringify(normMensj).length
+      const compressValue = (normalizedSize * 100) / originalSize
+ 
+      updateTitle(compressValue);
     });
   
     socket.on('notificacion-mensaje', (data) => {
       mensajes.push(data);
       updateMessages(mensajes);
     });
-
-    socket.on('notificacion-producto', (data) => {
-      productos.push(data);
-      updateProduct(productos);
-    });
+ 
     
   })();

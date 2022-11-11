@@ -1,0 +1,16 @@
+{
+    "name": "normaliz-example",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "type": "module",
+    "scripts": {
+      "start": "node ."
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "normalizr": "^3.6.1"
+    }
+  }
