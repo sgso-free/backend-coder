@@ -28,7 +28,9 @@ class Socket {
       let allMensj = await mensajes.getAll()
       let normMensj = {id : "999", "mensajes":allMensj}
       const dataNormalized = normalize(normMensj, mensajesSchema)
-       
+
+      console.log(dataNormalized)
+      
       clienteSocket.emit('inicio',dataNormalized)
 
       clienteSocket.on('nuevo-mensaje', (data) => { 

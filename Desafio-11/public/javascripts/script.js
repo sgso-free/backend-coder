@@ -57,7 +57,7 @@
     }
    
     function updateTitle(compressValue) {
-      compressH1.innerHTML = compressValue; 
+      compressH1.innerHTML = "(" + compressValue + "%)"; 
     }
 
     formMessage.addEventListener('submit', (event) => {
@@ -84,13 +84,16 @@
     });
   
     socket.on('inicio', (normMensj) => { 
-
-      const denormMensj = normalizr.denormalize(normMensj, mensajesSchema)
+ 
+      const denormMensj = normalizr.denormalize(normMensj.result, mensajesSchema,normMensj.entities)
+      console.log(denormMensj)
       messages = denormMensj.mensajes 
-      updateMessages(mensajes);
+      console.log(messages)
+      updateMessages(messages);
 
       const originalSize = JSON.stringify(denormMensj).length
       const normalizedSize = JSON.stringify(normMensj).length
+      console.log(originalSize,normalizedSize)
       const compressValue = (normalizedSize * 100) / originalSize
  
       updateTitle(compressValue);
