@@ -1,26 +1,39 @@
 const express = require('express')
 const path = require('path')
 const { parsed, error } = require("dotenv").config();
-
+const session = require('express-session')
+const MongoStore = require('connect-mongo')
  
-//const {engine} = require('hbs')
-
-//var indexRouter = require('./routers/index');
-const productosRouter = require('./routers/routerProducto')
-const carritoRouter = require('./routers/routerCarrito')
+const loginRouter = require('./routers/login.js')
 
 const app = express()
 
 const PORT = process.env.NODE_PORT
 const ENV = process.env.NODE_ENV
 
+const advancedOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}
+
 app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
+app.use(session({
+  store: MongoStore.create({
+    mongoUrl: 'mongodb+srv://dbUser:BVxGLJxLZedM8Dzh@cluster0.qucq1d7.mongodb.net/sesiones?retryWrites=true&w=majority',
+    mongoOptions: advancedOptions,
+    ttl: 10,
+  }),
+  secret: '3biXMV8#m5s7',
+  resave: true,
+  saveUninitialized: true,
+}))
+
 app.use(express.static(path.join(__dirname, 'public')))
- 
-app.use('/api/productos', productosRouter)
-app.use('/api/carrito', carritoRouter)
-//app.use('/', indexRouter);
+
+app.set('view engine', 'hbs')
+app.set('views', './views')
+app.use('/api', loginRouter)
 
 app.use(function (err, req, res, next) {
   console.error(err.stack)
@@ -28,7 +41,7 @@ app.use(function (err, req, res, next) {
 })
 
 app.get('*', function(req, res){
-  console.log(req.baseUrl)
+  console.log(req.query, JSON.stringify(req.body))
   res.status(404).json(`{error:-2,descripcion:"ruta ${req.baseUrl} metodo get no autorizada"}`);
 })
 
