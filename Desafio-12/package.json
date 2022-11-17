@@ -1,0 +1,26 @@
+{
+    "name": "desafio-10",
+    "version": "1.0.0",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "nodemon src/app.js"
+    },
+    "keywords": [],
+    "author": "Sandra Salvatico",
+    "license": "ISC",
+    "description": "Projecto Segunda Entrega - Backed-End CODER (Desafio 10)",
+    "dependencies": {
+        "express": "^4.18.1",
+        "express-handlebars": "^6.0.6",
+        "firebase": "^9.13.0",
+        "mongoose": "^6.7.0",
+        "firebase-admin": "^11.2.0",
+        "uuid": "^9.0.0"
+    },
+    "devDependencies": {
+        "dotenv": "^16.0.2",
+        "nodemon": "^2.0.19"
+    }
+}
