@@ -41,7 +41,7 @@ app.use(function (err, req, res, next) {
 })
 
 app.get('*', function(req, res){
-  console.log(req.query, JSON.stringify(req.body))
+  console.log("No autorizado ",req.query, JSON.stringify(req.body))
   res.status(404).json(`{error:-2,descripcion:"ruta ${req.baseUrl} metodo get no autorizada"}`);
 })
 
