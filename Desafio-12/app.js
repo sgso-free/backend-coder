@@ -1,9 +1,11 @@
+const config = require('./config') 
 const express = require('express')
 const path = require('path')
 const { parsed, error } = require("dotenv").config();
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
- 
+
+
 const loginRouter = require('./routers/login.js')
 
 const app = express()
@@ -20,7 +22,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
   store: MongoStore.create({
-    mongoUrl: 'mongodb+srv://dbUser:BVxGLJxLZedM8Dzh@cluster0.qucq1d7.mongodb.net/sesiones?retryWrites=true&w=majority',
+    mongoUrl: `${config.mongoStore.path}`,
     mongoOptions: advancedOptions,
     ttl: 60,
   }),
