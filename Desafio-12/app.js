@@ -22,7 +22,7 @@ app.use(session({
   store: MongoStore.create({
     mongoUrl: 'mongodb+srv://dbUser:BVxGLJxLZedM8Dzh@cluster0.qucq1d7.mongodb.net/sesiones?retryWrites=true&w=majority',
     mongoOptions: advancedOptions,
-    ttl: 10,
+    ttl: 60,
   }),
   secret: '3biXMV8#m5s7',
   resave: true,
