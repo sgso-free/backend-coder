@@ -1,0 +1,32 @@
+<section>
+<form id="form-logout" action="/api/logout" method="post">
+  <div class="wrapper">
+  <div class="row">Bienvenido {{this.username}}</div>
+  <div class="row"><button id="button-logout" type="submit" role="button">Logout</button></div>
+  </div>
+</form>
+
+</section>
+
+<section>
+
+<h1 >Centro de Mensajes</h1>
+<h1 id="compress"></h1>
+
+<input type="text" name="input-email" id="input-email" placeholder="Escribe e-mail">
+<input type="text" name="input-nombre" id="input-nombre" placeholder="Escribe nombre">
+<input type="text" name="input-apellido" id="input-apellido" placeholder="Escribe apellido">
+<input type="text" name="input-edad" id="input-edad" placeholder="Escribe edad">
+<input type="text" name="input-alias" id="input-alias" placeholder="Escribe alias">
+<input type="text" name="input-avatar" id="input-avatar" placeholder="Escribe avatar">
+
+<ul id="show-message"></ul>
+
+<form id="form-message">
+  <input type="text" name="input-message" id="input-message" placeholder="Escribe un mensaje">
+  <button type="submit">Enviar</button>
+</form>
+</section>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/script.js"></script>
