@@ -1,6 +1,4 @@
-const express = require('express')
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const express = require('express') 
 
 const {Router} = express
 
@@ -20,8 +18,16 @@ routerRegister.post('/', async (req,res)=>{
         password:password
     }
     
-    users.save(data) 
-    res.render('index')
+    const usersFind = await users.getByUserName(username) 
+
+    if (usersFind) { 
+        res.render('error',{message: 'Usuario ya registrado.'})
+    } else {
+        users.save(data) 
+        res.render('login') 
+    }
+
+    
   
 })
  

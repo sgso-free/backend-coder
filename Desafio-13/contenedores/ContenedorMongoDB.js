@@ -43,6 +43,30 @@ class ContenedorMongoDB {
 
   }
 
+  async getByQuery (query) {
+    try {
+
+      return this.collection.find(query)
+
+    } catch(error) {
+        throw new Error(`An error when get object by id (in getByQuery): ${error.message}`)
+      
+    }
+
+  }
+
+  async getOneByQuery (query) {
+    try {
+
+        return this.collection.findOne(query)
+
+    } catch(error) {
+        throw new Error(`An error when get object by id (in getByQuery): ${error.message}`)
+      
+    }
+
+  }
+
   async updateById (searchId,data) {
    
      this.collection.updateOne({_id : searchId},data).then(function(){

@@ -2,18 +2,17 @@
 
 const express = require('express') 
 const session = require('express-session')
-const MongoStore = require('connect-mongo')
-    
-const router = express.Router();
+const passport = require('passport')
 
-const USERNAME = "ejrp"
-const PASSWORD = "pollito1234"
+const router = express.Router();
+ 
+const api = require('../daos/index.js');  
+const users = api.UserDao;
+
 
 const auth = (req, res, next) => {
-
-  const { isAuth } = req.session
-  console.log(req.session)
-  if (isAuth) {    
+ 
+  if (req.isAuthenticated()) {    
     console.log("por aqui voy a autorizado")
     next()
   } else{
@@ -23,59 +22,28 @@ const auth = (req, res, next) => {
   }
 }
 
-router.post('/login', (req, res) => {
-  console.log(JSON.stringify(req.body));
-  const { username, password } = req.body
-  if (username === USERNAME && password === PASSWORD) {
-    req.session.username = username
-    req.session.isAuth = true  
-
-    req.session.save(err => {
-      if(err){
-        res.send('Ah ocurrido un error', error.message)
-      } else {
-         res.redirect('./');
-      }
-    }); //THIS SAVES THE SESSION.
- 
-  } else {
-    console.log(req.body)
-    res.status(401).send('Username or password invalid!')
-  }
+router.post('/login', passport.authenticate('sign-in',{ 
+  failureRedirect: "./" 
+}), async (req, res) => {
+    console.log("Login after auth",JSON.stringify(req.body));  
+    res.redirect('./');   
 })
 
 router.post('/logout', (req, res) => {  
-  const { username } = req.session
-  const data = {
-      username:username, 
-  }
-  req.session.destroy(error => {
-    if (!error) {
-      res.render('logout',data)
-    } else {
-      res.send('Ah ocurrido un error', error.message)
-    }
-  })
+    let username = req.user.username
+    req.logout(function(err) {
+      if (err) { return next(err); } 
+      res.render('logout',{username:username})
+    });
+    
 })
 
-router.get('/', auth,(req, res) => {
-
-  const data = {
-    username:req.session.username, 
-  }
-
-  res.render('index',data)
+router.get('/', auth,(req, res) => { 
+  res.render('index',req.user)
 })
 
-router.get('/name', (req, res) => {
-  let name;
-
-  if (!req.session) {
-      return res.status(404).send();
-  }
-
-  name = req.session.username;
-
+router.get('/name', (req, res) => {   
+  let name = req.user.username
   return res.status(200).send({name});
 })
 

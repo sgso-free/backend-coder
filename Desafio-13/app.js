@@ -3,14 +3,41 @@ const express = require('express')
 const path = require('path')
 const { parsed, error } = require("dotenv").config();
 const session = require('express-session')
-const MongoStore = require('connect-mongo')
+//const MongoStore = require('connect-mongo')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 
+const api = require('./daos/index.js');  
+const users = api.UserDao;
 
-/*passport.use('sign-in, new LocalStrategy(,(username,password,done) => {
-  User
-})*/
+passport.use('sign-in', new LocalStrategy({}, async(username, password, done) => {
+ 
+  await users.getCheckUser(username,password)
+    .then(user => {
+      if (!user) { 
+        done(null, false)
+      } else {
+        done(null, user)
+      } 
+    })
+    .catch(error => {
+      console.log('Error in sign-in', error.message)
+      done(error)
+    })
+
+    console.log("sali auth")
+
+}))
+
+passport.serializeUser((user, done) => {
+  done(null, user._id)
+})
+
+passport.deserializeUser((_id, done) => {
+  users.getById(_id)
+    .then(user => done(null, user))
+    .catch(done)
+})
  
 const loginRouter = require('./routers/login.js')
 const registerRouter = require('./routers/register.js')
@@ -28,11 +55,11 @@ const advancedOptions = {
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
-  store: MongoStore.create({
+  /*store: MongoStore.create({
     mongoUrl: `${config.mongoStore.path}`,
     mongoOptions: advancedOptions,
     ttl: 60,
-  }),
+  }),*/
   secret: '3biXMV8#m5s7',
   resave: true,
   saveUninitialized: true,

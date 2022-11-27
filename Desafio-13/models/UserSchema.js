@@ -12,7 +12,7 @@ UserSchema.pre('save', async function(next) {
     try {
       console.log("entrar save userschema")
       // check method of registration
-      const user = this;
+      const user = this;  
 
       //Use isModified to check whether the password is changing since you only need to hash new passwords.
       if (!user.isModified('password')) next();
@@ -27,12 +27,14 @@ UserSchema.pre('save', async function(next) {
       console.log("Entro error schema")
       return next(error);
     }
-  });
+});
 
 
   UserSchema.methods.matchPassword = async function (password) {
     try {
-      return await bcrypt.compare(password, this.password);
+      let match = await bcrypt.compare(password, this.password)
+      console.log("Find match",match)
+      return match;
     } catch (error) {
       throw new Error(error);
     }
