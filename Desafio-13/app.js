@@ -24,9 +24,7 @@ passport.use('sign-in', new LocalStrategy({}, async(username, password, done) =>
       console.log('Error in sign-in', error.message)
       done(error)
     })
-
-    console.log("sali auth")
-
+  
 }))
 
 passport.serializeUser((user, done) => {

@@ -1,0 +1,27 @@
+body {
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  }
+  
+  a {
+    color: #00B7FF;
+  }
+
+  .date-message {
+    color:brown;
+  }
+
+  .text-message {
+    color:green;
+    font-style: italic;
+  }
+
+  .email-message {
+    color:blue;
+    font-weight: bold;
+  }
+ 
+  .wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+  }
