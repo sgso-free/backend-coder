@@ -5,6 +5,7 @@ const { parsed, error } = require("dotenv").config();
 const session = require('express-session')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const  minimist = require('minimist')
 
 const api = require('./daos/index.js');  
 const users = api.UserDao;
@@ -38,11 +39,24 @@ passport.deserializeUser((_id, done) => {
  
 const loginRouter = require('./routers/login.js')
 const registerRouter = require('./routers/register.js')
+const infoRouter = require('./routers/info.js')
 
 const app = express()
-
-const PORT = process.env.NODE_PORT
+ 
 const ENV = process.env.NODE_ENV
+
+const opts = {
+    default:{
+      port: '8080'
+    },
+    alias:{
+      p: 'port'
+    }
+}
+const argv = minimist(process.argv.slice(2),opts);
+console.log("Argumentos",argv);
+console.log("PORT",argv['port']);
+const PORT = argv['port']
 
 const advancedOptions = {
   useNewUrlParser: true,
@@ -66,6 +80,7 @@ app.set('view engine', 'hbs')
 app.set('views', './views')
 app.use('/api', loginRouter)
 app.use('/api/register', registerRouter)
+app.use('/info', infoRouter)
 
 app.use(function (err, req, res, next) {
   console.error(err.stack)
