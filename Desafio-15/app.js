@@ -6,43 +6,10 @@ const session = require('express-session')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const  minimist = require('minimist')
+const cluster = require('cluster')
+const os = require('os')
 
-const api = require('./daos/index.js');  
-const users = api.UserDao;
 
-passport.use('sign-in', new LocalStrategy({}, async(username, password, done) => {
- 
-  await users.getCheckUser(username,password)
-    .then(user => {
-      if (!user) { 
-        done(null, false)
-      } else {
-        done(null, user)
-      } 
-    })
-    .catch(error => {
-      console.log('Error in sign-in', error.message)
-      done(error)
-    })
-  
-}))
-
-passport.serializeUser((user, done) => {
-  done(null, user._id)
-})
-
-passport.deserializeUser((_id, done) => {
-  users.getById(_id)
-    .then(user => done(null, user))
-    .catch(done)
-})
- 
-const loginRouter = require('./routers/login.js')
-const registerRouter = require('./routers/register.js')
-const infoRouter = require('./routers/info.js')
-
-const app = express()
- 
 const ENV = process.env.NODE_ENV
 
 const opts = {
@@ -58,46 +25,95 @@ console.log("Argumentos",argv);
 console.log("PORT",argv['port']);
 const PORT = argv['port']
 
-const advancedOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}
-
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }));
-app.use(session({
-  secret: '3biXMV8#m5s7',
-  resave: true,
-  saveUninitialized: true,
-}))
-
-app.use(express.static(path.join(__dirname, 'public')))
-app.use(passport.initialize());
-app.use(passport.session())
+/*if (cluster.isMaster) {
+  const numbCPUS = os.cpus().length
+  for (let i =0;i<numbCPUS;i++) {
+    cluster.fork()
+  }
+  cluster.on('exit',(worker,code,signal)=>{
+      console.log(`Worker killer: ${worker.process.pid} code ${code}`)
+  })
+} else {*/
 
 
-app.set('view engine', 'hbs')
-app.set('views', './views')
-app.use('/api', loginRouter)
-app.use('/api/register', registerRouter)
-app.use('/info', infoRouter)
 
-app.use(function (err, req, res, next) {
-  console.error(err.stack)
-  res.status(500).send('Something broke!')
-})
+  const api = require('./daos/index.js');  
+  const users = api.UserDao;
 
-app.get('*', function(req, res){
-  console.log("No autorizado ",req.query, JSON.stringify(req.body))
-  res.status(404).json(`{error:-2,descripcion:"ruta ${req.baseUrl} metodo get no autorizada"}`);
-})
+  passport.use('sign-in', new LocalStrategy({}, async(username, password, done) => {
+  
+    await users.getCheckUser(username,password)
+      .then(user => {
+        if (!user) { 
+          done(null, false)
+        } else {
+          done(null, user)
+        } 
+      })
+      .catch(error => {
+        console.log('Error in sign-in', error.message)
+        done(error)
+      })
+    
+  }))
 
-const server = app.listen(PORT, () => {
-  console.log(`Servidor http esta escuchando en el puerto ${server.address().port}`)
-  console.log(`http://localhost:${server.address().port}`)
-  console.log(`Environment:${ENV}`)
-})
+  passport.serializeUser((user, done) => {
+    done(null, user._id)
+  })
 
-server.on("error", error => console.log(`Error en servidor ${error}`))
+  passport.deserializeUser((_id, done) => {
+    users.getById(_id)
+      .then(user => done(null, user))
+      .catch(done)
+  })
+  
+  const loginRouter = require('./routers/login.js')
+  const registerRouter = require('./routers/register.js')
+  const infoRouter = require('./routers/info.js')
 
-module.exports = app;
+  const app = express()
+   
+  const advancedOptions = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+
+  app.use(express.json())
+  app.use(express.urlencoded({ extended: true }));
+  app.use(session({
+    secret: '3biXMV8#m5s7',
+    resave: true,
+    saveUninitialized: true,
+  }))
+
+  app.use(express.static(path.join(__dirname, 'public')))
+  app.use(passport.initialize());
+  app.use(passport.session())
+
+
+  app.set('view engine', 'hbs')
+  app.set('views', './views')
+  app.use('/api', loginRouter)
+  app.use('/api/register', registerRouter)
+  app.use('/info', infoRouter)
+
+  app.use(function (err, req, res, next) {
+    console.error(err.stack)
+    res.status(500).send('Something broke!')
+  })
+
+  app.get('*', function(req, res){
+    console.log("No autorizado ",req.query, JSON.stringify(req.body))
+    res.status(404).json(`{error:-2,descripcion:"ruta ${req.baseUrl} metodo get no autorizada"}`);
+  })
+
+  const server = app.listen(PORT, () => {
+    console.log(`Servidor http esta escuchando en el puerto ${server.address().port} ${process.pid}`)
+    console.log(`http://localhost:${server.address().port}`)
+    console.log(`Environment:${ENV}`)
+  })
+
+  server.on("error", error => console.log(`Error en servidor ${error}`))
+
+  module.exports = app;
+//}
