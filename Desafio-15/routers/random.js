@@ -20,7 +20,7 @@ function generateRandomNum (cant){
     let max = 1000; 
     let arrayRandom = [max];
     //Init
-    for(let i=1; i<max;i++) {
+    for(let i=0; i<max;i++) {
         arrayRandom[i]=0
         console.log(arrayRandom[i])
     }
