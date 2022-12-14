@@ -14,18 +14,23 @@ const ENV = process.env.NODE_ENV
 
 const opts = {
     default:{
-      port: '8080'
+      port: '8080',
+      modo: 'FORK'
     },
     alias:{
-      p: 'port'
+      p: 'port',
+      m: 'modo'
     }
 }
 const argv = minimist(process.argv.slice(2),opts);
 console.log("Argumentos",argv);
 console.log("PORT",argv['port']);
-const PORT = argv['port']
+console.log("MODE",argv['modo']);
 
-/*if (cluster.isMaster) {
+const PORT = argv['port']
+const MODO = argv['modo']
+
+if (MODO == 'CLUSTER') {
   const numbCPUS = os.cpus().length
   for (let i =0;i<numbCPUS;i++) {
     cluster.fork()
@@ -33,9 +38,7 @@ const PORT = argv['port']
   cluster.on('exit',(worker,code,signal)=>{
       console.log(`Worker killer: ${worker.process.pid} code ${code}`)
   })
-} else {*/
-
-
+} else {
 
   const api = require('./daos/index.js');  
   const users = api.UserDao;
@@ -70,7 +73,7 @@ const PORT = argv['port']
   const loginRouter = require('./routers/login.js')
   const registerRouter = require('./routers/register.js')
   const infoRouter = require('./routers/info.js')
-
+  const randomRouter = require('./routers/random.js') 
   const app = express()
    
   const advancedOptions = {
@@ -95,6 +98,7 @@ const PORT = argv['port']
   app.set('views', './views')
   app.use('/api', loginRouter)
   app.use('/api/register', registerRouter)
+  app.use('/api/randoms', randomRouter)
   app.use('/info', infoRouter)
 
   app.use(function (err, req, res, next) {
@@ -116,4 +120,4 @@ const PORT = argv['port']
   server.on("error", error => console.log(`Error en servidor ${error}`))
 
   module.exports = app;
-//}
+}
