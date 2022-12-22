@@ -38,3 +38,5 @@
 {"level":"error","message":"127.0.0.1 - log error"}
 {"level":"warn","message":"127.0.0.1 - log warn"}
 {"level":"error","message":"127.0.0.1 - log error"}
+{"level":"warn","message":"127.0.0.1 - log warn"}
+{"level":"error","message":"127.0.0.1 - log error"}
