@@ -6,7 +6,7 @@ const session = require('express-session')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const  minimist = require('minimist')
-const cluster = require('cluster')
+const cluster = require("cluster");
 const os = require('os')
 const compression = require('compression') 
 const winston = require('winston')
@@ -48,7 +48,7 @@ console.log("MODE",argv['modo']);
 const PORT = argv['port']
 const MODO = argv['modo']
 
-if (MODO == 'CLUSTER') {
+if (MODO == 'CLUSTER' && cluster.isMaster) {
   const numbCPUS = os.cpus().length
   for (let i =0;i<numbCPUS;i++) {
     cluster.fork()

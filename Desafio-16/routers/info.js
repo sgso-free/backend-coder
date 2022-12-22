@@ -28,6 +28,8 @@ router.get('/', (req, res) => {
     nrocpu: os.cpus().length
 
   }
+
+  //console.log(data)
   res.render('info',data )
 
 })
