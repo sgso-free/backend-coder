@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
 
   }
 
-  //console.log(data)
+  console.log(data)
   res.render('info',data )
 
 })
