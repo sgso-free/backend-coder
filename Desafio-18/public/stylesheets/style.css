@@ -21,6 +21,11 @@ body {
     font-weight: bold;
   }
  
+  .error-message-red {
+    color:red;
+    font-weight: bold;
+  }
+
   .wrapper {
     display: grid;
     grid-template-columns: 2fr 1fr;

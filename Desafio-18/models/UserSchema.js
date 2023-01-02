@@ -2,15 +2,42 @@ const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
-    "username": { type: String, require: true },
+    "username": {
+        type: String,
+        trim: true,
+        lowercase: true,
+        unique: true,
+        required: [true, "Email required"],
+        validate: {
+          validator: function(email) {
+            let regex = /^\w+([\.\-]?\w+)*@\w+([\.\-]?\w+)*(\.\w{2,3})+$/;
+            return regex.test(email);
+          },
+          message: props => `${props.value} is not a valid email!`
+        },
+    },
     "password": { type: String, require: true }, 
+    "name": { type: String, require: true }, 
+    "age": {type: Number, min: 18, max: 99, require: true },
+    "address": { type: String, require: true },     
+    "phone": {
+        type: String,
+        validate: {
+          validator: function(v) {
+            let regex = /^((\(\d{3}\))|\d{3})[- ]?\d{4}[- ]?\d{4}$/;
+            return regex.test(v);
+          },
+          message: props => `${props.value} is not a valid phone number!`
+        },
+        required: [true, 'User phone number required']
+    },
     "timestamp": { type: Date, default: Date.now },
   })
+
 
 //the passwword is encript before save
 UserSchema.pre('save', async function(next) {
     try {
-      console.log("entrar save userschema")
       // check method of registration
       const user = this;  
 
@@ -24,7 +51,6 @@ UserSchema.pre('save', async function(next) {
       this.password = hashedPassword;
       next();
     } catch (error) {
-      console.log("Entro error schema")
       return next(error);
     }
 });
@@ -33,7 +59,6 @@ UserSchema.pre('save', async function(next) {
   UserSchema.methods.matchPassword = async function (password) {
     try {
       let match = await bcrypt.compare(password, this.password)
-      console.log("Find match",match)
       return match;
     } catch (error) {
       throw new Error(error);

@@ -137,6 +137,6 @@ if (MODO == 'CLUSTER' && cluster.isMaster) {
   })
 
   server.on("error", error => logger.log('error', `Error en servidor ${error}`))
-
+ 
   module.exports = app;
 }
