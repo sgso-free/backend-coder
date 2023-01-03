@@ -2,13 +2,14 @@
 <section>
 <p class="error-message-red" >{{this.message}}</p>
 </section>
-<form id="form-message" action="/api/register" method="post">
+<form id="form-message" action="/api/register" method="post" enctype="multipart/form-data"> 
    <input type="text" name="username" id="username" placeholder="e-mail" value="{{this.username}}">
    <input type="password" name="password" id="password" placeholder="contraseña" >
    <input type="text" name="name" id="name" placeholder="nombre" value="{{this.name}}">
    <input type="text" name="age" id="age" placeholder="edad" value="{{this.age}}">
    <input type="text" name="address" id="address" placeholder="dirección" value="{{this.address}}">
    <input type="text" name="phone" id="phone" placeholder="teléfono" value="{{this.phone}}">
+   <input type="file" name="avatar" id="avatar">
    <button type="submit">Enviar</button>
 </form>
 <a href="/api">Iniciar sesión</button>

@@ -1,5 +1,7 @@
 const config = require('./config') 
 const express = require('express')
+const fileUpload = require('express-fileupload');
+
 const path = require('path')
 const { parsed, error } = require("dotenv").config();
 const session = require('express-session')
@@ -94,6 +96,11 @@ if (MODO == 'CLUSTER' && cluster.isMaster) {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   }
+
+  // enable files upload
+  app.use(fileUpload({
+    createParentPath: true
+  }));
 
   //app.use(compression())
   app.use(express.json())
