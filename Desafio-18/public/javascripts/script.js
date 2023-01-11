@@ -5,14 +5,9 @@
     const showMessage = document.getElementById('show-message');
     
     const inputEmail = document.getElementById('input-email');
-    const inputNombre = document.getElementById('input-nombre');
-    const inputApellido = document.getElementById('input-apellido');
-    const inputEdad = document.getElementById('input-edad');
-    const inputAlias = document.getElementById('input-alias');
-    const inputAvatar = document.getElementById('input-avatar');
-      
-    const compressH1 = document.getElementById('compress');
-
+    const inputNombre = document.getElementById('input-nombre'); 
+    const inputEdad = document.getElementById('input-edad'); 
+        
     const authorSchema = new normalizr.schema.Entity('author',{},{idAttribute: 'email'})
 
     const mensajeSchema = new normalizr.schema.Entity('mensaje', {
@@ -21,7 +16,7 @@
     const mensajesSchema = new normalizr.schema.Entity('mensajes', { 
       mensajes: [mensajeSchema]
     })
-
+ 
     const socket = io();
    
     function formatDate(data) {
@@ -55,11 +50,7 @@
         showMessage.appendChild(item);
       })
     }
-   
-    function updateTitle(compressValue) {
-      compressH1.innerHTML = "(" + compressValue + "%)"; 
-    }
-
+     
     formMessage.addEventListener('submit', (event) => {
       event.preventDefault();
  
@@ -67,18 +58,15 @@
               "text":inputMessage.value, 
               "author":{
                   "email":inputEmail.value,
-                  "nombre":inputNombre.value,
-                  "apellido":inputApellido.value,
-                  "edad":inputEdad.value,
-                  "alias":inputAlias.value,
-                  "avatar":inputAvatar.value
+                  "nombre":inputNombre.value, 
+                  "edad":inputEdad.value 
           }};
 
       socket.emit('nuevo-mensaje', data);
       inputMessage.value = '';
       inputMessage.focus();
     })
-   
+    
     socket.on('connect', () => {
       console.log('Conectados al servidor');
     });
@@ -94,15 +82,14 @@
       const originalSize = JSON.stringify(denormMensj).length
       const normalizedSize = JSON.stringify(normMensj).length
       console.log(originalSize,normalizedSize)
-      const compressValue = (normalizedSize * 100) / originalSize
+      //const compressValue = (normalizedSize * 100) / originalSize
  
-      updateTitle(compressValue);
+      //updateTitle(compressValue);
     });
   
     socket.on('notificacion-mensaje', (data) => {
       mensajes.push(data);
       updateMessages(mensajes);
     });
- 
-    
+  
   })();

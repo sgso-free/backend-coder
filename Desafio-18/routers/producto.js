@@ -5,14 +5,15 @@ const routerProducto = Router(Router)
 
 const userAdmin = true;
 const api = require('../daos/index.js');  
-const productos = api.productosDao;
+const productos = api.ProductosDao;
 
 //recibe y agrega un producto, 
 //y devuelve su id asignado.
 routerProducto.post('/', async (req,res)=>{ 
     if (userAdmin) {
         let { body : data } = req
-        res.status(200).json(await productos.save(data))
+        //res.status(200).json(await productos.save(data))
+        
     } else {
         res.status(200).json('{error:-1,descripcion:"ruta /productos metodo post no autorizada"');
     }
@@ -21,7 +22,20 @@ routerProducto.post('/', async (req,res)=>{
 
 //devuelve todos los productos
 routerProducto.get('/', async(_,res)=>{
-    res.status(200).json(await productos.getAll())
+    //res.status(200).json(await productos.getAll())
+    let productArr = await productos.getAll()
+    const data = {
+        productos:productArr, 
+        isEmpty:!productArr.length
+      } 
+    res.render('products',data)
+})
+
+//formulario nuevo producto
+routerProducto.get('/nuevoproducto', async(_,res)=>{
+    if (userAdmin) {
+        res.render('product')
+    }
 })
 
 //devuelve un producto según su id.

@@ -1,0 +1,72 @@
+<section>
+<form id="form-logout" action="/api/logout" method="post">
+  <div class="wrapper">
+  <div class="row">Bienvenido {{this.username}}</div>
+  <div class="row"><button id="button-logout" type="submit" role="button">Logout</button></div>
+  </div>
+</form>
+
+</section>
+
+<section>
+ <h1>Ingresar Producto</h1>
+  <form id="form-product" action="/api/productos" method="post">
+    <input type="text" name="nombre" id="nombre" required placeholder="Nombre"/>
+    <input type="text" name="descripcion" id="descripcion" required placeholder="Descripción"/>
+    <input type="text" name="codigo" id="codigo" required placeholder="código"/>
+    <input type="text" name="precio" id="precio" required placeholder="precio"/>
+    <input type="text" name="stock" id="stock" required placeholder="stock"/>
+    <input type="text" name="foto" id="foto" required placeholder="foto"/>
+    <button type="submit">Enviar</button>
+  </form>
+</section>
+
+<h1>Productos</h1>
+<table id="productos">
+    <tr>
+        <th>Codigo</th>
+        <th>Foto</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Stock</th> 
+    </tr>
+    {{#if isEmpty}}
+    <tr>
+        <td>No hay productos</td>
+    </tr>
+    {{/if}}
+    {{#each productos}}
+    <tr>
+        <td>{{this.codigo}}</td>
+        <td><img src="{{this.foto}}" alt="{{this.nombre}}" style="width:50px ;"></td>
+        <td>{{this.nombre}}</td>
+        <td>{{this.precio}}</td>
+        <td>{{this.stock}}</td> 
+    </tr>
+    {{/each}} 
+</table>
+
+<section>
+
+<!--
+<h1 >Centro de Mensajes</h1>
+<h1 id="compress"></h1>
+
+<input type="text" name="input-email" id="input-email" placeholder="Escribe e-mail">
+<input type="text" name="input-nombre" id="input-nombre" placeholder="Escribe nombre">
+<input type="text" name="input-apellido" id="input-apellido" placeholder="Escribe apellido">
+<input type="text" name="input-edad" id="input-edad" placeholder="Escribe edad">
+<input type="text" name="input-alias" id="input-alias" placeholder="Escribe alias">
+<input type="text" name="input-avatar" id="input-avatar" placeholder="Escribe avatar">
+
+<ul id="show-message"></ul>
+
+<form id="form-message">
+  <input type="text" name="input-message" id="input-message" placeholder="Escribe un mensaje">
+  <button type="submit">Enviar</button>
+</form>
+</section>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/script.js"></script>
+-->

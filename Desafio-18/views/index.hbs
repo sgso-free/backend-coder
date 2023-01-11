@@ -7,18 +7,20 @@
 </form>
 
 </section>
-
 <section>
+<nav> 
+  <ul>
+    <li><a href="productos/" role="button">Productos</a></li>
+    <li><a href="#" role="button">Carrito</a></li> 
+  </ul>
+</nav>
+</section>
+  
 
 <h1 >Centro de Mensajes</h1>
-<h1 id="compress"></h1>
-
-<input type="text" name="input-email" id="input-email" placeholder="Escribe e-mail">
-<input type="text" name="input-nombre" id="input-nombre" placeholder="Escribe nombre">
-<input type="text" name="input-apellido" id="input-apellido" placeholder="Escribe apellido">
-<input type="text" name="input-edad" id="input-edad" placeholder="Escribe edad">
-<input type="text" name="input-alias" id="input-alias" placeholder="Escribe alias">
-<input type="text" name="input-avatar" id="input-avatar" placeholder="Escribe avatar">
+<input type="text" name="input-email" id="input-email" placeholder="Escribe e-mail" value=" {{this.username}}">
+<input type="text" name="input-nombre" id="input-nombre" placeholder="Escribe nombre" value="{{this.name}}"> 
+<input type="text" name="input-edad" id="input-edad" placeholder="Escribe edad" value=" {{this.age}}">
 
 <ul id="show-message"></ul>
 

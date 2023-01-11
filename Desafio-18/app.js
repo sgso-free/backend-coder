@@ -11,17 +11,9 @@ const  minimist = require('minimist')
 const cluster = require("cluster");
 const os = require('os')
 const compression = require('compression') 
-const winston = require('winston')
 
-
-const logger = winston.createLogger({
-   level: 'info',
-   transports : [
-       new winston.transports.Console({level:'info'}),
-       new winston.transports.File({ filename: 'warn.log', level:'warn' }),
-       new winston.transports.File({ filename: 'error.log', level:'error' }),
-   ]
-})
+const logger = require('./logger.js');  
+var Socket = require('./Socket.js');
 
 const ENV = process.env.NODE_ENV
 
@@ -145,5 +137,8 @@ if (MODO == 'CLUSTER' && cluster.isMaster) {
 
   server.on("error", error => logger.log('error', `Error en servidor ${error}`))
  
+
+  Socket.init(server)
+
   module.exports = app;
 }

@@ -1,6 +1,7 @@
 let ProductosDao
 let CarritosDao
 let UserDao
+let MensajesDao
 
   
     switch (process.env.TIPO_PERSISTENCIA) {
@@ -50,4 +51,7 @@ let UserDao
     const UserDaoMongoDB = require('./user/UserDaoMongoDB.js')
     UserDao = new UserDaoMongoDB()
  
-  module.exports =  { ProductosDao, CarritosDao, UserDao }
+    const MensajesDaoArchivo = require('./mensajes/MensajesDaoArchivo.js')
+    MensajesDao = new MensajesDaoArchivo()
+
+  module.exports =  { ProductosDao, CarritosDao, UserDao, MensajesDao }

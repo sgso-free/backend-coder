@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const logger = require('./logger.js'); 
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
@@ -18,13 +19,10 @@ const opts = {
 
 class sendMail {
     async senMail (subject,html) {
-        try {
-            console.log("Aqui0",opts)
+        try { 
             opts.subject=subject
-            opts.html = html
-            console.log("Aqui1",opts)
-            let result = await transporter.sendMail(opts)
-            console.log("Aqui2",result)
+            opts.html = html 
+            let result = await transporter.sendMail(opts) 
             return result
         } catch (error) {
             logger.log('error', `Error in sned mail${error.message}`)

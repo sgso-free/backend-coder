@@ -9,7 +9,8 @@ const router = express.Router();
 const api = require('../daos/index.js');  
 const users = api.UserDao;
 
-
+const logger = require('../logger.js');  
+ 
 const auth = (req, res, next) => {
  
   if (req.isAuthenticated()) {    
