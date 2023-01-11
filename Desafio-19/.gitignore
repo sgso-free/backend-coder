@@ -1,0 +1,4 @@
+node_modules
+DB
+.log
+public/uploads
