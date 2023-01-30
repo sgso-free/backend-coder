@@ -1,15 +1,15 @@
 {
-    "name": "desafio-18",
+    "name": "desafio-21",
     "version": "1.0.0",
     "main": "app.js",
     "scripts": {
-        "test": "node benchmark.js",
+        "test": "mocha",
         "start": "0x app.js -p 8081"
     },
     "keywords": [],
     "author": "Sandra Salvatico",
     "license": "ISC",
-    "description": "Proyecto Version 2 - Backed-End CODER (Desafio 18)",
+    "description": "Proyecto Add Test - Backed-End CODER (Desafio 21)",
     "dependencies": {
         "autocannon": "^7.10.0",
         "bcrypt": "^5.1.0",
@@ -29,8 +29,12 @@
         "winston": "^3.8.2"
     },
     "devDependencies": {
+        "axios": "^1.2.5",
+        "chai": "^4.3.7",
         "dotenv": "^16.0.2",
+        "mocha": "^10.2.0",
         "nodemon": "^2.0.19",
-        "axios": "^1.2.5"
+        "sinon": "^15.0.1",
+        "supertest": "^6.3.3"
     }
 }
