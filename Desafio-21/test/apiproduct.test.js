@@ -14,14 +14,15 @@ describe('API Products', () => {
   
   it('Should get a list a products successfully', async () => {
     sandbox
-      .stub(PersonsService, 'getAll')
+      .stub(productos, 'getAll')
       .resolves('--TEST--')
     const response = await request.get('/api/productos')
     expect(response.statusCode).to.be.eq(200)
+    console.log(response.body)
     expect(response.body).to.be.eq('--TEST--')
   })
 
-  /*it('Should create a person successfully', async () => {
+ /*it('Should create a product successfully', async () => {
     sandbox
       .stub(PersonsService, 'create')
       .resolves('--TEST--')
@@ -33,8 +34,8 @@ describe('API Products', () => {
     
     expect(PersonsService.create.args[0][0]).to.have.property('key')
     expect(PersonsService.create.args[0][0].key).to.be.eq('--TEST-BODY--')
-  })
-
+  })*/
+ /*
   it('Should get a person by id successfully', async () => {
     sandbox
       .stub(PersonsService, 'getById')

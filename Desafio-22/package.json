@@ -1,0 +1,30 @@
+{
+    "name": "desafio-22",
+    "version": "1.0.0",
+    "main": "app.js",
+    "type": "module",
+    "scripts": {
+        "test": "",
+        "start": "node .",
+        "dev": "nodemon app.js"
+    },
+    "keywords": [],
+    "author": "Sandra Salvatico",
+    "license": "ISC",
+    "description": "Proyecto  - Backed-End CODER (Desafio 22)",
+    "dependencies": {
+        "compression": "^1.7.4",
+        "express": "^4.18.1",
+        "express-fileupload": "^1.4.0",
+        "express-session": "^1.17.3",
+        "hbs": "~4.0.4",
+        "mongoose": "^6.7.0",
+        "passport": "^0.6.0",
+        "passport-local": "^1.0.0",
+        "winston": "^3.8.2"
+    },
+    "devDependencies": {
+        "dotenv": "^16.0.2",
+        "nodemon": "^2.0.19"
+    }
+}
