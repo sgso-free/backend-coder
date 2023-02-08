@@ -1,0 +1,5 @@
+node_modules
+DB
+error.log
+warn.log
+public/uploads
