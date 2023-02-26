@@ -1,0 +1,35 @@
+<h1 id="Product">Productos</h1>
+<section>
+<nav> 
+  <ul>
+    <li><a href="/api/productos/nuevoproducto" role="button">Nuevo Producto</a></li>
+    <li><a href="/" role="button">Volver</a></li> 
+  </ul>
+</nav>
+</section>
+ 
+
+<table id="productos">
+    <tr>
+        <th>Codigo</th>
+        <th>Foto</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Stock</th> 
+    </tr>
+    {{#if isEmpty}}
+    <tr>
+        <td>No hay productos</td>
+    </tr>
+    {{/if}}
+    {{#each productos}}
+    <tr>
+        <td>{{this.codigo}}</td>
+        <td><img src="{{this.foto}}" alt="{{this.nombre}}" style="width:50px ;"></td>
+        <td>{{this.nombre}}</td>
+        <td>{{this.precio}}</td>
+        <td>{{this.stock}}</td> 
+    </tr>
+    {{/each}} 
+</table>
+<section>
