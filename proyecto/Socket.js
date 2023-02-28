@@ -1,8 +1,8 @@
-const { Server } = require('socket.io')
-const { schema, normalize, denormalize } = require('normalizr') 
+import { Server } from 'socket.io'
+import { schema, normalize, denormalize } from 'normalizr'
 
-const api = require('./daos/index.js');  
-const mensajes= api.MensajesDao;
+import MessageFactory from './models/dao/messages/Message.factory.js' 
+const messages = MessageFactory.getMessageDao() 
 
 const authorSchema = new schema.Entity('author',{},{idAttribute: 'email'})
 
@@ -25,7 +25,7 @@ class Socket {
     io.on('connection', async (clienteSocket) => {
       console.log('Nuevo cliente conectado', clienteSocket.id)
  
-      let allMensj = await mensajes.getAll()
+      let allMensj = await messages.getAll()
       let normMensj = {id : "999", "mensajes":allMensj}
       const dataNormalized = normalize(normMensj, mensajesSchema)
 

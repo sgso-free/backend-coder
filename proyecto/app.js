@@ -19,7 +19,7 @@ const users = UserFactory.getUserDao()
 
 import loginRouter from './routers/RouterLogin.js' 
 import registerRouter  from './routers/RouterRegister.js'  
-//import infoRouter from './routers/info.js' 
+import infoRouter from './routers/RouterInfo.js' 
 //import randomRouter from './routers/random.js'   
 import productosRouter from './routers/RouterProducts.js' 
 import carritoRouter from './routers/RouterCarts.js' 
@@ -43,10 +43,10 @@ const opts = {
 const argv = minimist(process.argv.slice(2),opts);
 console.log("Argumentos",argv);
 console.log("PORT",argv['port']);
-console.log("MODE",argv['modo']);
+//console.log("MODE",argv['modo']);
 
 const PORT = argv['port']
-const MODO = argv['modo']
+//const MODO = argv['modo']
  
 /*if (MODO == 'CLUSTER' && cluster.isMaster) {
   const numbCPUS = os.cpus().length
@@ -120,7 +120,7 @@ const MODO = argv['modo']
   app.use('/api', loginRouter)
   app.use('/api/register', registerRouter)
   //app.use('/api/randoms', randomRouter)
-  //app.use('/info', infoRouter)
+  app.use('/info', infoRouter)
   app.use('/api/productos', productosRouter)
   app.use('/api/carrito', carritoRouter)
 
