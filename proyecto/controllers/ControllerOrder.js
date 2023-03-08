@@ -1,6 +1,6 @@
 const userAdmin = true;
 import OrderFactory from '../models/dao/order/Order.factory.js' 
-const orders = OrderFactory.getOrderDao()
+
  
 
 //recibe y agrega un producto, 
@@ -18,6 +18,7 @@ const nuevaOrden = async (req, res) => {
 //devuelve una orden
 const listarOrden = async (req, res) => { 
         try {
+            const orders = OrderFactory.getOrderDao()
             const searchId = req.params.id; //id order
             let prFind = await orders.getById(searchId)
             if (prFind) { 

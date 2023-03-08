@@ -1,4 +1,3 @@
-import config  from './config.js'  
 import express from 'express' 
 import fileUpload from 'express-fileupload' 
 import  minimist from 'minimist'
@@ -14,8 +13,6 @@ import os from 'os'
 import compression from 'compression' 
 
 import logger  from './logger.js' ;   
-import UserFactory from './models/dao/users/User.factory.js' 
-const users = UserFactory.getUserDao()
 
 import loginRouter from './routers/RouterLogin.js' 
 import registerRouter  from './routers/RouterRegister.js'  
@@ -28,42 +25,23 @@ import * as url from 'url';
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
+import UserFactory from './models/dao/users/User.factory.js' 
+const users = UserFactory.getUserDao()
+
 const ENV = process.env.NODE_ENV
 
 const opts = {
     default:{
-      port: '8080',
-      modo: 'FORK'
+      port: '8080'
     },
     alias:{
-      p: 'port',
-      m: 'modo'
+      p: 'port'
     }
 }
 const argv = minimist(process.argv.slice(2),opts);
-console.log("Argumentos",argv);
-console.log("PORT",argv['port']);
-//console.log("MODE",argv['modo']);
-
 const PORT = argv['port']
-//const MODO = argv['modo']
- 
-/*if (MODO == 'CLUSTER' && cluster.isMaster) {
-  const numbCPUS = os.cpus().length
-  for (let i =0;i<numbCPUS;i++) {
-    cluster.fork()
-  }
-  cluster.on('exit',(worker,code,signal)=>{
-      console.log(`Worker killer: ${worker.process.pid} code ${code}`)
-  })
-} else {
 
-  console.log("Aqui 01")*/
-
-  /*const api = require('./daos/servicios.js');  
-  const users = api.UserDao;*/
-
-  passport.use('sign-in', new LocalStrategy({}, async(username, password, done) => {
+passport.use('sign-in', new LocalStrategy({}, async(username, password, done) => {
   
     await users.getCheckUser(username,password)
       .then(user => {
@@ -106,7 +84,7 @@ const PORT = argv['port']
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }));
   app.use(session({
-    secret: '3biXMV8#m5s7',
+    secret: process.env.SESION_SECRET,
     resave: true,
     saveUninitialized: true,
   }))
@@ -119,13 +97,11 @@ const PORT = argv['port']
   app.set('views', './views')
   app.use('/api', loginRouter)
   app.use('/api/register', registerRouter)
-  //app.use('/api/randoms', randomRouter)
   app.use('/info', infoRouter)
   app.use('/api/productos', productosRouter)
   app.use('/api/carrito', carritoRouter)
 
   app.use(function (err, req, res, next) {
-    //console.error(err.stack)
     logger.log('error', `Error en servidor ${err.stack}`)
     res.status(500).send('Something broke!')
   })
@@ -143,5 +119,4 @@ const PORT = argv['port']
   })
 
   server.on("error", error => logger.log('error', `Error en servidor ${error}`))
-  
-//}
+   

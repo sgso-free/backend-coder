@@ -1,18 +1,19 @@
 import nodemailer from "nodemailer" ;
 import logger from './logger.js' ; 
+import config from './config.js' 
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
     auth: {
-        user: 'chasity.hauck@ethereal.email',
-        pass: 'YgPCxMDERHTVkxEVWX'
+        user: process.env.MAIL_AUTH_USER,
+        pass: process.env.MAIL_AUTH_PASS
     }
 });
 
 const opts = {
     from: 'Servidor Node',
-    to: 'chasity.hauck@ethereal.email',
+    to: process.env.MAIL_AUTH_USER,
     subject: ' Hola from Node',
     html: '<h1></h1>'
 }

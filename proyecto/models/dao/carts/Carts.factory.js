@@ -1,4 +1,3 @@
-import config from '../../../config.js'
 import CartsFileDao from './CartsFile.dao.js';
 import CartsMemDao from './CartsMemory.dao.js';
 import CartsMongoDao from './CartsMongoDB.dao.js';
@@ -6,8 +5,7 @@ import CartsMongoDao from './CartsMongoDB.dao.js';
 class CartsDaoFactory {
 
   static getCartsDao(){
-    console.log('config.dao.target', config.dao.target);
-    switch (config.dao.target) {
+    switch (process.env.TIPO_PERSISTENCIA) { 
       case 'file':
         return CartsFileDao.getInstance()
       case 'mongo':

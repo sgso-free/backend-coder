@@ -10,7 +10,7 @@ class AccessMongoDB {
     }
  
    async connectDb () {
-      await mongoose.connect(config.mongoDB.dbURI ).then(
+      await mongoose.connect(process.env.DBURI ).then(
           () => {
               console.info(`Connected to database`)
           },

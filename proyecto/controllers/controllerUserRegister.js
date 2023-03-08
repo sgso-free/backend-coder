@@ -1,13 +1,13 @@
 const userAdmin = true;
 import UserFactory from '../models/dao/users/User.factory.js' 
-const users = UserFactory.getUserDao()
+
  
 import sendMail from '../mail.js'
   
 //recibe y agrega un usuario, 
 //y devuelve su id asignado
 const nuevoUsuario = async (req, res) => {
- 
+    const users = UserFactory.getUserDao()
     const { username, password, name, age, address, phone } = req.body
      
     const data = {

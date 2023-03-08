@@ -1,11 +1,9 @@
-import config from '../../../config.js' 
 import MessageMongoDao from './MessageMongoDB.dao.js';
 
 class MessageDaoFactory {
 
   static getMessageDao(){
-    console.log('config.dao.target', config.dao.target);
-    switch (config.dao.target) { 
+    switch (process.env.TIPO_PERSISTENCIA) { 
       case 'mongo':
         return MessageMongoDao.getInstance()
       default:

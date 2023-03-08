@@ -1,7 +1,5 @@
 const userAdmin = true;
-import UserFactory from '../models/dao/users/User.factory.js' 
-const users = UserFactory.getUserDao()
-   
+
 import logger from '../logger.js';  
  
 const auth = (req, res, next) => {

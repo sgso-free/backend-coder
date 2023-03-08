@@ -1,11 +1,9 @@
-import config from '../../../config.js' 
 import UserMongoDao from './UserMongoDB.dao.js';
 
 class UserDaoFactory {
 
   static getUserDao(){
-    console.log('config.dao.target', config.dao.target);
-    switch (config.dao.target) { 
+    switch (process.env.TIPO_PERSISTENCIA) { 
       case 'mongo':
         return UserMongoDao.getInstance()
       default:

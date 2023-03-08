@@ -8,13 +8,14 @@ const UserSchema = new mongoose.Schema({
         lowercase: true,
         unique: true,
         required: [true, "Email required"],
-        validate: {
+        //lo quite por solicitud de la reentrega
+        /*validate: {
           validator: function(email) {
             let regex = /^\w+([\.\-]?\w+)*@\w+([\.\-]?\w+)*(\.\w{2,3})+$/;
             return regex.test(email);
           },
           message: props => `${props.value} is not a valid email!`
-        },
+        },*/
     },
     "password": { type: String, require: true }, 
     "name": { type: String, require: true }, 
@@ -22,7 +23,7 @@ const UserSchema = new mongoose.Schema({
     "address": { type: String, require: true },     
     "phone": {
         type: String,
-        validate: {
+       validate: {
           validator: function(v) {
             let regex = /^((\(\d{3}\))|\d{3})[- ]?\d{4}[- ]?\d{4}$/;
             return regex.test(v);

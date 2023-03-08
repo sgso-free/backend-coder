@@ -1,11 +1,9 @@
-import config from '../../../config.js' 
 import OrderMongoDao from './OrderMongoDB.dao.js';
 
 class OrderDaoFactory {
 
   static getOrderDao(){
-    console.log('config.dao.target', config.dao.target);
-    switch (config.dao.target) { 
+    switch (process.env.TIPO_PERSISTENCIA) { 
       case 'mongo':
         return OrderMongoDao.getInstance()
       default:

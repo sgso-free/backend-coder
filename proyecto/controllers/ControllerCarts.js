@@ -1,12 +1,12 @@
 const userAdmin = true;
 import CartsFactory from '../models/dao/carts/Carts.factory.js' 
-const carritos = CartsFactory.getCartsDao()
- 
+
 
 //recibe y agrega un producto, 
 //y devuelve su id asignado.
 const nuevoCarrito = async (req, res) => { 
     try {
+        const carritos = CartsFactory.getCartsDao()
         let { body : data } = req
         res.status(200).json(await carritos.save(data)) 
     } catch(error) {
@@ -18,6 +18,7 @@ const nuevoCarrito = async (req, res) => {
 //devuelve los productos del carrito  
 const listarProductosCarrito = async (req, res) => { 
         try {
+            const carritos = CartsFactory.getCartsDao()
             const searchId = req.params.id; //id carrito
             let prFind = await carritos.getById(searchId)
             if (prFind) {
@@ -42,7 +43,8 @@ const listarProductosCarrito = async (req, res) => {
 //elimina un carrito
 const eliminarCarrito = async (req, res) => { 
         try {    
-            const searchId = req.params.id;
+            const carritos = CartsFactory.getCartsDao()
+             const searchId = req.params.id;
             //console.log("Delete id:",searchId);
             await carritos.deleteById(searchId) ;
                 
@@ -56,6 +58,7 @@ const eliminarCarrito = async (req, res) => {
 //elimina un producto del carrito
 const eliminarProductoCarrito = async (req, res) => { 
         try {       
+            const carritos = CartsFactory.getCartsDao()
             const searchId = req.params.id;
             const searchIdProd = req.params.id_prod;
             //console.log("Delete id:",searchId);
@@ -72,6 +75,7 @@ const eliminarProductoCarrito = async (req, res) => {
 //y devuelve su id asignado. 
 const agregarProductoCarrito = async (req, res) => { 
     try { 
+        const carritos = CartsFactory.getCartsDao()
         const searchId = req.params.id;
         let { body : data } = req  
         console.log("Agregar producto")

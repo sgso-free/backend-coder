@@ -1,11 +1,12 @@
 const userAdmin = true;
 import ProductsFactory from '../models/dao/products/Products.factory.js' 
-const productos = ProductsFactory.getProductsDao()
+
 
 //recibe y agrega un producto, 
 //y devuelve su id asignado.
 const nuevoProducto = async (req, res) => { 
     try {
+        const productos = ProductsFactory.getProductsDao()
         if (userAdmin) {
             let { body : data } = req
             res.status(200).json(await productos.save(data))
@@ -20,6 +21,7 @@ const nuevoProducto = async (req, res) => {
 
 //devuelve todos los productos
 const listarProductos = async (_, res) => {  
+    const productos = ProductsFactory.getProductsDao()
     res.status(200).json(await productos.getAll())
     //let productArr = await productos.getAll()
     /*const data = {
@@ -28,14 +30,7 @@ const listarProductos = async (_, res) => {
       } 
     res.render('products',data)*/
 }
-
-//formulario nuevo producto
-const showFormNuevoProducto = async (_, res) => {   
-    if (userAdmin) {
-        res.render('product')
-    }
-}
-
+ 
 //devuelve un producto según su id.
 const listarProductoByID = async (req, res) => {    
 
@@ -61,6 +56,7 @@ const listarProductoByID = async (req, res) => {
 //actualiza un producto
 const actualizarProductoByID = async (req, res) => {   
     try{
+        const productos = ProductsFactory.getProductsDao()
 
         if (userAdmin) {
             const searchId = req.params.id;
@@ -91,7 +87,9 @@ const actualizarProductoByID = async (req, res) => {
 //elimina un producto
 const eliminarProductoByID = async (req, res) => {    
     try {
+
         if (userAdmin) {
+            const productos = ProductsFactory.getProductsDao()
             //const searchId = parseInt(req.params.id, 10);
             const searchId = req.params.id;
             //console.log("Delete id:",searchId);
@@ -107,4 +105,4 @@ const eliminarProductoByID = async (req, res) => {
    
 }
 
-export default {nuevoProducto, listarProductos, showFormNuevoProducto,listarProductoByID,actualizarProductoByID,eliminarProductoByID}
+export default {nuevoProducto, listarProductos,listarProductoByID,actualizarProductoByID,eliminarProductoByID}
