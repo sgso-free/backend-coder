@@ -4,8 +4,7 @@ import ProductsMongoDao from './ProductsMongoDB.dao.js';
 
 class ProductsDaoFactory {
 
-  static getProductsDao(){
-    console.log('config.dao.target product', config.dao.target);
+  static getProductsDao(){ 
     switch (process.env.TIPO_PERSISTENCIA) { 
       case 'file':
         return ProductsFileDao.getInstance()

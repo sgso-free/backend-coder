@@ -36,6 +36,7 @@ const listarProductoByID = async (req, res) => {
 
     try {
         const searchId = req.params.id;
+        const productos = ProductsFactory.getProductsDao()
         let prFind = await productos.getById(searchId)
         if (prFind) {
             //console.log('Here from router (Get)',prFind)
@@ -87,7 +88,7 @@ const actualizarProductoByID = async (req, res) => {
 //elimina un producto
 const eliminarProductoByID = async (req, res) => {    
     try {
-
+ 
         if (userAdmin) {
             const productos = ProductsFactory.getProductsDao()
             //const searchId = parseInt(req.params.id, 10);

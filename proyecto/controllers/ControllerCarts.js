@@ -1,14 +1,32 @@
 const userAdmin = true;
 import CartsFactory from '../models/dao/carts/Carts.factory.js' 
-
+import UserFactory from '../models/dao/users/User.factory.js' 
+import ProductsFactory from '../models/dao/products/Products.factory.js' 
 
 //recibe y agrega un producto, 
 //y devuelve su id asignado.
 const nuevoCarrito = async (req, res) => { 
     try {
-        const carritos = CartsFactory.getCartsDao()
-        let { body : data } = req
-        res.status(200).json(await carritos.save(data)) 
+        
+        const { username } = req.body
+      
+        const data = {
+            username:username 
+        }
+ 
+        //chequear el usuario
+        const users = UserFactory.getUserDao() 
+        const usersFind = await users.getByUserName(username) 
+
+        if (usersFind) { 
+            //creo carrito
+            const carritos = CartsFactory.getCartsDao() 
+            res.status(200).json(await carritos.save(data)) 
+        } else {
+            res.status(200).json('{error:-1,descripcion:"Usuario no registrado"}')
+        }
+
+        res.status(200).end()
     } catch(error) {
         res.status(200).json(`{error:-2,descripcion:${error.message}}`)
     } 
@@ -21,20 +39,15 @@ const listarProductosCarrito = async (req, res) => {
             const carritos = CartsFactory.getCartsDao()
             const searchId = req.params.id; //id carrito
             let prFind = await carritos.getById(searchId)
-            if (prFind) {
-                //console.log('Here from router (Get)',prFind)
-                //console.log('Here from router (Productos)',prFind.productos)
-                //console.log('Here from router (Productos)',prFind._id)
+            if (prFind) { 
                 res.status(200).json(prFind.products)
-            } else {
-                //console.log({ error : 'carrito no encontrado' })
-                res.send({ error : 'carrito no encontrado' })
+            } else { 
+                res.status(200).json('{error:-1,descripcion:"carrito no encontrado"}') 
             }
-
+ 
             res.status(200).end()
-
         } catch(error) {
-            res.status(200).json(`{error:-2,descripcion:${error.message}}`)
+            res.status(200).json(`{error:-2,descripcion:"${error.message}"}`)
         } 
 }
 
@@ -44,13 +57,13 @@ const listarProductosCarrito = async (req, res) => {
 const eliminarCarrito = async (req, res) => { 
         try {    
             const carritos = CartsFactory.getCartsDao()
-             const searchId = req.params.id;
+            const searchId = req.params.id;
             //console.log("Delete id:",searchId);
             await carritos.deleteById(searchId) ;
                 
             res.status(200).end()
         } catch(error) {
-            res.status(200).json(`{error:-2,descripcion:${error.message}}`)
+            res.status(200).json(`{error:-2,descripcion:"${error.message}"}`)
         } 
  
 }
@@ -60,41 +73,44 @@ const eliminarProductoCarrito = async (req, res) => {
         try {       
             const carritos = CartsFactory.getCartsDao()
             const searchId = req.params.id;
-            const searchIdProd = req.params.id_prod;
-            //console.log("Delete id:",searchId);
+            const searchIdProd = req.params.id_prod; 
+
             await carritos.deleteByProd(searchId,searchIdProd) ;
                 
             res.status(200).end()
         } catch(error) {
-            res.status(200).json(`{error:-2,descripcion:${error.message}}`)
+            res.status(200).json(`{error:-2,descripcion:"${error.message}"}`)
         } 
 }
 
 
 //recibe y agrega un producto, 
-//y devuelve su id asignado. 
+//al carrito
 const agregarProductoCarrito = async (req, res) => { 
     try { 
-        const carritos = CartsFactory.getCartsDao()
-        const searchId = req.params.id;
-        let { body : data } = req  
-        console.log("Agregar producto")
-        res.status(200).json(await carritos.addProduct(searchId,data)); 
+     
+        const { _id, qtyItem } = req.body
 
-        /*prodArrayId = data.productos; 
-        for (const idProd of prodArrayId) {
-            let prFind = await productos.getById(idProd)
-            if (prFind) {
-                console.log('Here from router (Get)',prFind)
-                await carritos.addProduct(searchId,prFind) ;
-            } else {
-                console.log({ error : 'producto no encontrado' })
-            }
-        }; */
+        const data = {
+            _id: _id,
+            qtyItem: qtyItem
+        }
 
+        //chequeo existencia producto
+        const productos = ProductsFactory.getProductsDao()
+        let prFind = await productos.getById(_id)
+        if (prFind) { 
+            const carritos = CartsFactory.getCartsDao()
+            const searchId = req.params.id;
+            res.status(200).json(await carritos.addProduct(searchId,data)); 
+
+        } else { 
+            res.status(200).json('{error:-1,descripcion:"producto no encontrado"}') 
+        }
+ 
         res.status(200).end()
     } catch(error) {
-        res.status(200).json(`{error:-2,descripcion:${error.message}}`)
+        res.status(200).json(`{error:-2,descripcion:"${error.message}"}`)
     } 
      
 }
