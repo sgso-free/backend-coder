@@ -22,13 +22,14 @@ const nuevoUsuario = async (req, res) => {
     const usersFind = await users.getByUserName(username) 
 
     if (usersFind) { 
-        res.render('error',{message: 'Usuario ya registrado.'})
+        res.status(200).json('{error:-2,descripcion:"Usuario ya registrado."'); 
     } else {
  
         try {
             if(!req.files) { 
-                data.message = "Avatar not upload"
-                res.render('register',data)
+                //data.message = "Avatar not upload"
+                //res.render('register',data)
+                res.status(200).json('{error:-3,descripcion:"Avatar not upload."');
             } else {
                 //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
                 let avatar = req.files.avatar;
@@ -40,11 +41,13 @@ const nuevoUsuario = async (req, res) => {
                 const sm = new sendMail()
                 sm.senMail("Nuevo Registro",JSON.stringify(data))
         
-                res.render('login') 
+                //res.render('login') 
+                res.status(200); 
             }
           } catch (error) { 
-              data.message = error.message
-              res.render('register',data)
+              //data.message = error.message
+              //res.render('register',data)
+              res.status(200).json(`{error:-2,descripcion:${error.message}}`)
           }
 
     }
