@@ -2,12 +2,11 @@ import { Server } from 'socket.io'
 import { schema, normalize, denormalize } from 'normalizr'
 
 import MessageFactory from './models/dao/messages/Message.factory.js' 
-const messages = MessageFactory.getMessageDao() 
 
-const authorSchema = new schema.Entity('author',{},{idAttribute: 'email'})
+
+/*const authorSchema = new schema.Entity('author',{},{idAttribute: 'email'})*/
 
 const mensajeSchema = new schema.Entity('mensaje', {
-    author: authorSchema 
 }) 
 const mensajesSchema = new schema.Entity('mensajes', { 
   mensajes: [mensajeSchema]
@@ -20,7 +19,7 @@ class Socket {
   static async init(httpServer) {
     console.log('Configurando el socket')
     let io = new Server(httpServer)
-  
+    const messages = MessageFactory.getMessageDao() 
 
     io.on('connection', async (clienteSocket) => {
       console.log('Nuevo cliente conectado', clienteSocket.id)
@@ -33,12 +32,11 @@ class Socket {
       
       clienteSocket.emit('inicio',dataNormalized)
 
-      clienteSocket.on('nuevo-mensaje', (data) => { 
-        //mensajes.push({ socketID: clienteSocket.id, mensaje: data, fecha: new Date(), email:name })
-        //console.log(clienteSocket.id)
+      clienteSocket.on('nuevo-mensaje', async (data) => { 
         data.fecha = new Date()
         data.socketID = clienteSocket.id
-        mensajes.save(data)
+        console.log(data)
+        await messages.save(data)
         io.emit('notificacion-mensaje',data)
       })
  
@@ -48,5 +46,5 @@ class Socket {
     })
   }
 }
-
-module.exports = Socket
+ 
+export default Socket
