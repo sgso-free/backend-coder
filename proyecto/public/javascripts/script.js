@@ -71,16 +71,10 @@
  
       const denormMensj = normalizr.denormalize(normMensj.result, mensajesSchema,normMensj.entities)
       console.log(denormMensj)
-      messages = denormMensj.mensajes 
-      console.log(messages)
-      updateMessages(messages);
+      mensajes = denormMensj.mensajes 
+      console.log(mensajes)
+      updateMessages(mensajes);
 
-      const originalSize = JSON.stringify(denormMensj).length
-      const normalizedSize = JSON.stringify(normMensj).length
-      console.log(originalSize,normalizedSize)
-      //const compressValue = (normalizedSize * 100) / originalSize
- 
-      //updateTitle(compressValue);
     });
   
     socket.on('notificacion-mensaje', (data) => {

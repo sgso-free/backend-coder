@@ -20,6 +20,7 @@ import infoRouter from './routers/RouterInfo.js'
 //import randomRouter from './routers/random.js'   
 import productosRouter from './routers/RouterProducts.js' 
 import carritoRouter from './routers/RouterCarts.js' 
+import chatRouter from './routers/RouterMessage.js' 
 
 import * as url from 'url';
 const __filename = url.fileURLToPath(import.meta.url);
@@ -100,6 +101,7 @@ passport.use('sign-in', new LocalStrategy({}, async(username, password, done) =>
   app.use('/info', infoRouter)
   app.use('/api/productos', productosRouter)
   app.use('/api/carrito', carritoRouter)
+  app.use('/api/chat', chatRouter)
 
   app.use(function (err, req, res, next) {
     logger.log('error', `Error en servidor ${err.stack}`)

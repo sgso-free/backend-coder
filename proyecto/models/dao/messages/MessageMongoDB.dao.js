@@ -17,6 +17,10 @@ class MessageMongoDBDao extends AccessMongoDB {
         return super.save(message)
     }
 
+    async getByUserName (username) {
+      return super.getByQuery({email:username})
+  }
+
     static getInstance() {
         if (!instance) {
           instance = new MessageMongoDBDao()
