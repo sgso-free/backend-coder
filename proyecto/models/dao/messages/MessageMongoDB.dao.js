@@ -13,6 +13,7 @@ class MessageMongoDBDao extends AccessMongoDB {
     }
 
     async save(message) { 
+       
         return super.save(message)
     }
 

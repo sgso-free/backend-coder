@@ -8,10 +8,9 @@
     const inputNombre = document.getElementById('input-nombre'); 
     const inputEdad = document.getElementById('input-edad'); 
         
-    const authorSchema = new normalizr.schema.Entity('author',{},{idAttribute: 'email'})
+    /*const authorSchema = new normalizr.schema.Entity('author',{},{idAttribute: 'email'})*/
 
     const mensajeSchema = new normalizr.schema.Entity('mensaje', {
-        author: authorSchema 
     }) 
     const mensajesSchema = new normalizr.schema.Entity('mensajes', { 
       mensajes: [mensajeSchema]
@@ -46,7 +45,7 @@
       messages.forEach((data) => {
         const item = document.createElement('li');
         
-        item.innerHTML = `<span class="email-message">${data.author.email}</span> [<span class="date-message">${formatDate(data.fecha)}</span>] : <span class="text-message">${data.text}</span>`;
+        item.innerHTML = `<span class="email-message">${data.email}</span> [<span class="date-message">${formatDate(data.fecha)}</span>] : <span class="text-message">${data.cuerpo}</span>`;
         showMessage.appendChild(item);
       })
     }
@@ -55,13 +54,10 @@
       event.preventDefault();
  
       let data = {
-              "text":inputMessage.value, 
-              "author":{
-                  "email":inputEmail.value,
-                  "nombre":inputNombre.value, 
-                  "edad":inputEdad.value 
-          }};
-
+              "cuerpo":inputMessage.value, 
+              "email":inputEmail.value
+          };
+      console.log(data)
       socket.emit('nuevo-mensaje', data);
       inputMessage.value = '';
       inputMessage.focus();

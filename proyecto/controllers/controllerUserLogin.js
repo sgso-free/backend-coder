@@ -28,6 +28,7 @@ const logoutUser = async (req, res) => {
 }
 
 const dashboarUser = async (req, res) => { 
+  console.log("Aui paso")
   res.render('index',req.user)
 }
  

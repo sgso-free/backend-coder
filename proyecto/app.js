@@ -119,4 +119,8 @@ passport.use('sign-in', new LocalStrategy({}, async(username, password, done) =>
   })
 
   server.on("error", error => logger.log('error', `Error en servidor ${error}`))
-   
+  
+  import Socket from './Socket.js';
+  Socket.init(server)
+
+  export default app
